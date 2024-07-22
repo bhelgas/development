@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .button-container{
+            display: flex;
+            position: relative;
+            box-sizing: border-box;
+            height: 100px;
+        }
+        button{
+            z-index:1;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            background-color: Transparent;
+            background-repeat:no-repeat;
+            cursor:pointer;
+            overflow: hidden;
+            outline:none;
+            border-radius: 2px;
+            display: inline-block;
+            border: 5px solid black;
+            color: white;
+            font-family: "Quicksand", sans-serif;
+            font-size: 250%;
+            letter-spacing: 2px;
+            text-align: center;
+            padding: 20px 100px;
+            font-weight: 900;
+            -webkit-text-stroke: 2px black;
+        }
+        .button-shadow{
+            z-index: -1;
+            top: 8%;
+            left: 3%;
+            border-radius: 2px;
+            display: inline-block;
+            background-color: rgb(243, 193, 54);
+            height: 100%;
+            width: 100%;
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+    <div class="button-container">
+        <button>ELEMENT</button>
+        <div class="button-shadow"></div>
+      </div>
+</body>
+</html>

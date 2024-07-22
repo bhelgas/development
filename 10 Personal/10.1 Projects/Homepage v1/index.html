@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--primary-color);
+        }
+        :root {
+            --primary-color: #fdfd;
+        }
+        .menu_svg {
+            height: 25px;
+            width: 25px;
+            fill: black;
+            transition: .2s ease-in-out;
+        }
+        #menu_svg_background {
+            background-color: transparent;
+            width: 30px;
+            height: 30px;
+            display: flex;
+                align-items: center;
+                justify-content: center;
+            border-radius: 5px;
+            padding: 5px;
+            transition: .2s ease-in-out;
+            cursor: pointer;
+            z-index: 12000;
+        }
+        #menu_svg_background:hover {
+            background-color: var(--primary-color);
+        }
+        #menu_svg_background:hover .menu_svg {
+            transform: rotate(360deg);
+        }
+        header {
+            display: flex;
+                justify-content: space-between;
+                align-items: center;
+            position: absolute;
+                left: 15px;
+                top: 15px;
+                right: 15px;
+            background-color: white;
+            border-radius: 10px;
+            padding: 15px 50px 15px 50px;
+            transition: .2s ease-in-out;
+        }
+        header > nav, ul {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+        }
+        header > nav > ul > li {
+            padding: 15px;
+            border-radius: 5px;
+            background-color: white;
+            user-select: none;
+        }
+        header > nav > ul > li:hover {
+            background-color: var(--primary-color);
+        }
+        .mobile_navigation {
+            display: none;
+        }
+        #mobile_navigation_menu {
+            background-color: white;
+            display: none;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            position: absolute;
+                top: 5rem;
+                right: 0;
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+            padding: 10px 
+        }
+            @media only screen and ( max-width: 1000px ) {
+                header {
+                    position: absolute;
+                        top: 0;
+                        left: 0;
+                        right: 0;
+                    padding: 15px 20px 15px 20px;
+                    border-radius: 0;
+                }
+                header > nav > ul {
+                    display: none;
+                }
+                .mobile_navigation {
+                    display: flex;
+                    
+                }
+            }
+        nav > ul > li {
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .mobile_navigation_links {
+            padding: 0;
+        }
+        .mobile_navigation_links > ul > li {
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .mobile_navigation_links > ul > li:hover {
+            background-color: var(--primary-color);
+        }
+        .show {
+            display: flex !important; 
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h3>
+            Benjamin Helgås - Portfolio
+        </h3>
+
+        <nav class="desktop__navigation">
+            <ul>
+                <li>Om meg</li>
+                <li>Mine prosjekt</li>
+                <li>Kontakt meg</li>
+            </ul>
+        </nav>
+        <nav class="mobile_navigation">
+            <div id="menu_svg_background" onclick="testFunction()">
+                <svg class="menu_svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve" width="512" height="512">
+                    <g>
+                        <path d="M480,224H32c-17.673,0-32,14.327-32,32s14.327,32,32,32h448c17.673,0,32-14.327,32-32S497.673,224,480,224z"/>
+                        <path d="M32,138.667h448c17.673,0,32-14.327,32-32s-14.327-32-32-32H32c-17.673,0-32,14.327-32,32S14.327,138.667,32,138.667z"/>
+                        <path d="M480,373.333H32c-17.673,0-32,14.327-32,32s14.327,32,32,32h448c17.673,0,32-14.327,32-32S497.673,373.333,480,373.333z"/>
+                    </g>
+                </svg>
+            </div>
+        </nav>
+    </header>
+    <div id="mobile_navigation_menu">
+        <nav class="mobile_navigation_links">
+            <ul>
+                <li>Om meg</li>
+                <li>Mine prosjekt</li>
+                <li>Kontakt meg</li>
+            </ul>
+        </nav>
+    </div>
+
+
+
+    <script>
+        var mobile_navigation_menu = document.querySelector("#mobile_navigation_menu");
+        function testFunction() {
+            mobile_navigation_menu.classList.toggle("show");
+        }
+
+        window.addEventListener('resize', () => {
+            console.log("Resized" + window.innerWidth)
+            if(window.innerWidth >= 1000) {
+                mobile_navigation_menu.classList.remove("show");
+            }
+        });
+
+    </script>
+</body>
+</html>

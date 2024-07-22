@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: Arial, sans-serif;
+            height: 100dvh;
+            width: 100dvw;
+            background: linear-gradient(rgb(255, 168, 68) 0%, white 100%);
+        }
+        .item::after {
+            content: "";
+            width: 10px;
+            height: 10px;
+            display: block;
+            position: absolute;
+        }
+        .container {
+            box-sizing: border-box;
+            height: 20rem;
+            width: 20rem;
+            backdrop-filter: blur(500rem);
+            border-radius: 10px;
+            padding: 5px 20px 5px 20px;
+            transition: .3s ease-in-out;
+            background-color: rgba(255, 255, 255, 0.284);
+            box-shadow: 10px 10px  rgba(0, 0, 0, 0.15);
+            border: 2px solid transparent;
+        }
+        .container:hover {
+            backdrop-filter: blur(0);
+            background-color: transparent;
+            box-shadow: none;
+        }
+        .item::after {
+            transition: .3s ease-in-out;
+        }
+        .container:hover > .item::after {
+            background-color: rebeccapurple;
+            border: 2px solid black;
+            border-radius: 100px;
+        }
+        button {
+            all: unset;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        ijkdfv klmad klmdv vkd klvmvklfddddddddddddddkdfklgfdmklfd gklgmklfmklgkl klkl gklklgkf
+    </div>
+</body>
+</html>
