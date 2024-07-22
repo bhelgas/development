@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background-color: #09100d;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        a.navigationItem {
+            background-color: #404c6f;
+            padding: 5px 20px 5px 20px;
+            transition: .2s ease-in-out;
+            cursor: pointer;
+            box-shadow: 0px 0px 0px #accfc0;
+            border: 2px solid transparent;
+            width: fit-content;
+            font-weight: bold;
+            color: white;
+            border: 2px solid white;
+        }
+        a.navigationItem:hover {
+            border-radius: 0;
+            background-color: white;
+            color:#404c6f;
+        }
+        a.navigationItem#title {
+            border-radius: 0;
+            background-color: white;
+            color:#404c6f;
+            box-shadow: 5px 5px 0px #404c6f;
+            border-top-left-radius: 100px;
+            border-bottom-right-radius: 100px;
+        }
+        header {
+            background-color: #404c6f;
+            display: flex;
+            justify-content: space-between;
+            padding: 20px 40px 20px 40px;
+        }
+        header div.flex {
+            display: flex;
+            gap: 20px;
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <a class="navigationItem" id="title">
+            Benjamin Helgås - Photography
+        </a>
+        <div class="flex">
+            <a class="navigationItem">
+                Homepage
+            </a>
+            <a class="navigationItem">
+                Blog
+            </a>
+            <a class="navigationItem">
+                Contact me
+            </a>
+        </div>
+    </header>
+   
+</body>
+</html>

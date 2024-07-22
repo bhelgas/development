@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+
+* {
+    margin: 0;
+    padding: 0;
+}
+            body {
+                        background-color: white;
+                        font-family: Arial, Helvetica, sans-serif;
+                    }
+
+                    div {
+            background-color: rgb(130, 201, 201);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+            div.header{
+                display: flex;
+                flex-direction: row;
+                gap: 20px;
+                color: black;
+            }
+            div.header a {
+                color: black;
+                text-decoration: none;
+                border-bottom: 2px solid black;
+            }
+            h1 { 
+                padding: 20px;
+            }
+            main {
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr;
+                padding: 20px;
+            }
+            div.form {
+                padding: 20px;
+                border-radius: 10px;
+            }
+            input, button {
+                background-color: white;
+                padding: 5px;
+
+border-radius: 10px;           
+
+border: 2px solid black; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="./index.html">Heim</a>
+        <a href="./logginn.html">Logg inn</a>
+        <a href="./lagartikkel.html">Ny artikkel</a>
+    </div>
+    <h1>Logg inn eller lag en bruker</h1>
+  <main>
+    <div class="form">
+        <label for="epost">E-post</label>
+        <input type="email" name="epost" id="epost" placeholder="E-post">
+        <label for="passord">Passord</label>
+        <input type="password" name="passord" id="passord">
+        <button id="registrerbtn">Ny bruker</button>
+        <button id="logginnbtn">Logg inn</button>
+    </div>
+  </main>
+
+
+
+
+
+    <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+    import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword }  from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+
+
+    const firebaseConfig = {
+ /*Absolutely not.*/
+};
+
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
+
+// definering av varibaler
+const logginnbtn = document.getElementById("logginnbtn");
+const registrerbtn = document.getElementById("registrerbtn");
+
+//lag bruker
+registrerbtn.addEventListener('click', () => {
+    const email = document.getElementById("epost").value;
+    const password = document.getElementById("passord").value;
+    createUserWithEmailAndPassword(auth, email, password).then(() => {
+        setDoc(doc(db, "bruker", email), {
+            rolle: "montør"
+        })
+    }).catch((err) => {
+        console.log(err);
+    })
+})
+
+
+// logg inn
+logginnbtn.addEventListener('click', () => {
+    const email = document.getElementById("epost");
+    const password = document.getElementById("passord");
+    signInWithEmailAndPassword(auth, email, password).then(() => {
+    }).catch((err) => {
+        console.log(err);
+    })
+})
+    </script>
+</body>
+</html>

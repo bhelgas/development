@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="global.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+        }
+        body{
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            gap: 50px;
+            padding: 20px;
+            font-family: Arial, Helvetica, sans-serif;
+            height: 100dvh;
+            width: 100dvw;
+            justify-content: center;
+            align-items: center;
+        }
+        main {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            justify-content: center;
+
+        }
+        form {
+            padding: 15px;
+            background-color: white;
+            box-shadow: 0 0 10px #f4f4f4;
+            border-radius: 15px;
+            display: flex;
+            justify-content: space-between;
+            flex-direction: column;
+            gap: 5px;
+            height: 15rem;
+        }
+        form div {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        input, button {
+            
+            padding: 5px 10px 5px 10px;
+            border-radius: 5px;
+            background-color: #f4f4f4;
+            border: 0;
+
+        }
+        button {
+            padding: 15px;
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Please log in or create an account</h1>
+        <h3>[company name]</h3>
+    </header>
+    <main>
+        <form action="">
+            <div>
+                <h2 style="align-self: center !important;">Sign in</h2><br>
+                <input type="email" id="sign_in_email" placeholder="E-Mail">
+                <input type="password" name="" id="sign_in_password" placeholder="Password">
+            </div>
+            <div>
+                <button id="sign_in_button">Sign In</button>
+            </div>
+        </form>
+        <form action="">
+            <div>
+                <h2 style="align-self: center !important;">Sign up</h2><br>
+                <input type="text" id="sign_up_username" placeholder="Username">
+                <input type="email" id="sign_up_email" placeholder="E-Mail">
+                <input type="password" name="" id="sign_up_password" placeholder="Password">
+            </div>
+            <div>
+                <button id="sign_up_button">Sign up</button>
+            </div>
+        </form>
+    </main>
+    <script type="module" src="script.js">
+        document.addEventListener("DOMContentLoaded", () => {
+            var sign_in_email = document.querySelector("#sign_in_email");
+            var sign_in_password = document.querySelector("#sign_in_password");
+            var sign_in_button = document.querySelector("#sign_in_button");
+
+            var sign_up_username = document.querySelector("#sign_up_username");
+            var sign_up_email = document.querySelector("#sign_up_email");
+            var sign_up_password = document.querySelector("#sign_up_password");
+            var sign_up_button = document.querySelector("#sign_up_button");
+
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    console.log("logged in");
+                    var display_username = document.querySelector("#display_username");
+                    const doc_ref = doc(db, "Users/", user.email)
+                    const doc_snap = await getDoc(doc_ref);
+                    display_username.textContent = doc_snap.data().username;
+                } else {
+                    console.log("not logged in");
+                }
+            })
+            
+
+            sign_in_button.addEventListener("click", async (e) => {
+                e.preventDefault();
+                signInWithEmailAndPassword(auth, sign_in_email.ariaValueMax, sign_in_password.value) 
+                .then(() => {
+                    console.log("User signed in..");
+                })
+                .catch((error) => {
+                    throw new Error(error);
+                })
+            })
+
+            sign_up_button.addEventListener("click", async (e) => {
+                e.preventDefault() 
+                createUserWithEmailAndPassword(auth, sign_up_email.value, sign_up_password.value)
+                .then( async () => {
+                    const doc_ref = (doc(db, "Users/", sign_up_email.value));
+                    setDoc(doc_ref, {
+                        username: sign_up_username.value,
+                        email: sign_up_email.value,
+                        role: sign_up_role.value,
+                        
+                    })
+                })
+                .catch((error) => {
+                    throw new Error(error);
+                })
+            })
+    })
+    </script>
+</body>
+</html>

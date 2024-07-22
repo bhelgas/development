@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        :root {
+            --imgGrad: 2%;
+        }
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+
+        body{padding: 50px;background-color: #000000;color: white;font-family: "Plus Jakarta Sans", sans-serif;}
+        .image {
+            background-size:cover;
+            border-radius: 10px;
+            box-sizing: border-box;
+            transition: .5s;
+        }
+        .image:hover {
+           HEIGHT: 28REM;
+            width: 20rem;
+        }
+        .image * {
+            margin: 0;
+        }
+        .banner {
+            height: 20rem;
+            width: 50rem;
+
+        }
+        .cover {
+            height: 25rem;
+            width: 18rem;
+            
+        }
+        .imageGradient {
+            background: rgb(0,0,0);
+            background: linear-gradient(0deg, #242438 2%, rgba(0,212,255,0) 100%);
+            height: 100%;
+            width: 100%; 
+            display: flex;
+            flex-direction: column;
+            justify-content: end;
+            padding: 20px;
+            box-sizing: border-box;
+            border-radius: 10px;
+            transition: .5s ease-in-out;
+        }
+        .flex {
+            display: flex;
+            gap: 20px;
+        }
+    </style>
+</head> 
+    <div class="image" style="height: 20rem; width: 20rem; background-color: red;border-radius:10px;">
+        <div class="imageGradient">
+            <h1>Movie title</h1>
+            <p>Genre</p>
+        </div>
+
+    </div>
+    <div id="content">
+    </div>
+<body>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+        
+
+        const firebaseConfig = {
+                  /*We don't do this shit around here*/
+        };
+        
+        const app = initializeApp(firebaseConfig);
+
+        var arrivalImage = `https://musicart.xboxlive.com/7/cb173900-0000-0000-0000-000000000002/504/image.jpg?w=1920&h=1080`;
+        var content = document.querySelector("#content");
+
+        
+
+
+        var duneImage = `https://cdn.fact.co.uk/uploads/images/_1200x630_crop_center-center_82_none/Dune-part-two-picturehouse-at-fact.jpeg?v=1709125909`;
+        function setContent() {
+            content.innerHTML += 
+            `
+                <div class="image banner" style="background-image:url('${duneImage}')">
+                    <div class="imageGradient">
+                        <h1>Dune: Part Two</h1>
+                        <p>Action</p>
+                    </div>
+                </div>
+            <br><br>
+
+            <h1>FEATURED MOVIES</h1>
+                <div class="flex">
+                    <div class="image cover" style="background-image:url('${arrivalImage}')">
+                    <div class="imageGradient">
+                        <h2>Arrival</h2>
+                        <p>Science fiction</p>
+                    </div>
+                    </div>
+                    <div class="image cover" style="background-image:url('https://upload.wikimedia.org/wikipedia/en/6/69/Damaged_2024_film_poster.jpg')">
+                        <div class="imageGradient">
+                            <h2>Damaged</h2>
+                            <p>Action</p>
+                        </div>
+                    </div>
+                    <div class="image cover" style="background-image:url('https://resizing.flixster.com/-XZAfHZM39UwaGJIFWKAE8fS0ak=/v3/t/assets/p7883425_k_v10_aa.jpg')">
+                        <div class="imageGradient">
+                            <h2>Stolen</h2>
+                            <p>Thriller</p>
+                        </div>
+                    </div>
+                </div>
+        `
+       
+        }
+
+        setContent();
+
+
+        
+</script>
+</body>
+</html>

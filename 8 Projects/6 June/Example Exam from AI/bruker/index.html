@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../global.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        body{
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        header {
+            padding: 10px 25% 10px 25%;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        button#sign_out {
+            padding: 5px 10px 5px 10px;
+            border: 0;
+            background-color: #e17fc733;
+            border-radius: 2.5px;
+            cursor: pointer;
+            transition: .3s ease-in-out;
+        }
+        input, button, select {
+            color: black;
+            padding: 5px 10px 5px 10px;
+            background-color: #e17fc733;
+            border: 0;
+            border-radius: 2.5px;
+            color: black;
+        }
+        input::placeholder {
+            color: black;
+        }
+        
+        button#sign_out:hover {
+            filter: brightness(1.4);
+        }
+
+        main {
+            padding: 10px 25% 10px 25%;
+            
+        }
+        main > section {
+            display: grid;
+            grid-template-columns: repeat(2,1fr);
+            gap: 10px;
+        }
+        section > div {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            padding: 15px;
+        }
+    </style>
+
+</head>
+<body>
+    <header>
+        <h4>Oslofjord Skoleportal</h4>
+    </header>
+
+    <main>
+        <section>
+            <div>
+                Logg inn
+                <input type="email" id="login_email" placeholder="E-post">
+                <input type="password" id="login_password" placeholder="Passord">
+                <button id="login">Logg inn</button>
+            </div>
+            <div>
+               Ny bruker
+
+               <input type="text" id="new_user_first_name" placeholder="Fornavn">
+               <input type="text" id="new_user_last_name" placeholder="Etternavn">
+               <select name="" id="new_user_role">
+                <option value="Elev">Elev</option>
+                <option value="Lærer">Lærer</option>
+                <option value="Foresatt">Foresatt</option>
+                <option value="Administrator">Administrator</option>
+               </select>
+               <input type="email" id="new_user_email" placeholder="E-post">
+               <input type="password" id="new_user_password" placeholder="Passord">
+               <button id="create_user">Lag ny bruker</button>
+            </div>
+        </section>
+    </main>
+   
+    <script type="module" src="../user_content.js">        
+    </script>
+</body>
+</html>

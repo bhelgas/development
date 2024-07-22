@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../global.css">
+    <style>
+        section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            align-items: start;
+        }
+        .sort-by {
+            padding-top: 10px;
+        }
+        .form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+
+        }
+        .form > div {
+            display: flex;
+            gap: 10px;
+            box-sizing: border-box;
+        }
+        input, select {
+            padding: 5px 10px 5px 10px;
+            border: 0;
+            width: 100%;
+            border-radius: 5px;
+        }
+        .block {
+            padding: 20px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header id="global_header">
+        Laster inn...
+    </header>
+    <header class="menu">
+        <a href="../artikler/index.html">Våre artikler</a>
+        <a href="../ny-artikkel/index.html">Ny artikkel</a>
+        <a href="../administrasjon/index.html">Administrer brukere</a>
+        <a href="../artikkel-behandler/">Behandle artikler</a>
+    </header>
+    <main>
+        <section>
+
+        </section>
+        <section>
+            <div class="block">
+                <h2>Rediger bruker</h2>
+                <p>Velg en bruker fra menyen til høyre</p>
+                <br><br><br>
+                <div>
+                    <p>Redigerer: <span id="currently_editing">Ingen valgt</span></p>
+                    <br>
+                    <div class="form" action="">
+                        <div>
+                        <input type="text" id="first_name" placeholder="First name"> 
+                        <input type="text" id="last_name"  placeholder="Last name">
+                        </div>
+                        <div>
+                        <input type="email" id="email" placeholder="E-post"> 
+                        <select name="" id="role">
+                            <option value="Administrasjon">Administrasjon</option>
+                            <option value="Montør">Montør</option>
+                            <option value="Selger">Selger</option>
+                            <option value="Kunde">Kunde</option>
+                        </select>
+                        </div>
+                        <div>
+                            <button class="primary" id="update_user">Oppdater bruker</button>
+                            <button class="secondary" id="delete_user">Slett bruker</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="block">
+                <h2>Velg en bruker </h2>
+                <p>Sorter med rolle</p>
+                <div class="sort-by">
+                    <button class="secondary" id="sort_all">Alle</button>
+                    <button class="secondary" id="sort_kunder">Kunder</button>
+                    <button class="secondary" id="sort_selger">Selgere</button>
+                    <button class="secondary" id="sort_montør">Montører</button>
+                    <button class="secondary" id="sort_administrasjon">Administrasjon</button>
+                </div><br>
+                Rolle valgt: <span id="selected_role">Ingen</span>
+                <div id="display_users">
+
+                </div>
+            </div>
+        </section> 
+        <section>
+
+        </section>
+        </section>
+    </main>
+
+
+
+
+
+    <script type="module" src="../init_app.js"></script>
+    <script type="module" src="./administrasjon.js"></script>
+</body>
+</html>

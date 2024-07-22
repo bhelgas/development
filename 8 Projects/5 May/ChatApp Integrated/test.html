@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+ 
+    <input type="email" name="" id="email">
+    <input type="password" name="" id="password">
+    <button id="register_button">Register</button>
+</head>
+<body>
+   
+ 
+    <script type="module">
+        import { initializeApp }
+        from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+ 
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut }
+        from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+ 
+        const firebaseConfig = {
+            /*Absolutely not.*/
+        };
+ 
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+ 
+        var register_button = document.querySelector("#register_button");
+ 
+       
+ 
+        register_button.addEventListener('click', async () => {
+           console.log("clicked");
+           var email = document.querySelector("#email").value;
+           var password = document.querySelector("#password").value;
+            createUserWithEmailAndPassword(auth, email, password);
+        })
+ 
+ 
+ 
+       
+    </script>
+</body>
+</html>

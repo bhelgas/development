@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../global.css">
+    <style>
+        form {
+            background-color: var(--block-color);
+            padding: 15px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .glb {
+            display: grid;
+            grid-template-columns: repeat(2,1fr);
+        }
+        form > div  {
+            display: flex;
+            gap: 10px;
+        }
+        input, select {
+            padding: 5px 10px 5px 10px;
+            border: 0;
+            width: 100%;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+    <header id="global_header">
+        Laster inn...
+    </header>
+    <header class="menu">
+        <a href="../artikler/index.html">Våre artikler</a>
+        <a href="../ny-artikkel/index.html">Ny artikkel</a>
+        <a href="../administrasjon/index.html">Administrer brukere</a>
+        <a href="../artikkel-behandler/">Behandle artikler</a>
+    </header>
+    <main>
+        <div>
+
+        </div>
+        <div class="glb" >
+            <h1 style="align-self:start;padding-top: 20px">
+                Velkommen tilbake!
+            </h1>
+            <form action="">
+                <h2>Logg inn her</h2><br>
+                <input type="email" name="" id="email" placeholder="E-post">
+                <input type="password" name="" id="password" placeholder="Passord">
+                <button id="log-in">Logg innr</button>
+            </form>
+        </div>
+        <div>
+
+        </div>
+    </main>
+
+
+
+
+
+    <script type="module" src="../init_app.js"></script>
+    <script type="module" src="./logg-inn.js"></script>
+</body>
+</html>

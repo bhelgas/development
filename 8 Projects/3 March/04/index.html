@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        input {
+            margin-bottom: 5px;
+            border-radius: 0;
+            padding: 5px;
+            border: 1px solid gray;
+            border-radius: 5px;
+        }
+        main {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+        main div {
+            background-color: white;
+            border-radius: 5px;
+            padding: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.087);
+        }
+        main div div {
+            all: unset;
+        }
+        h1 {
+            margin: 0;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <div>
+            <h1>Student Registration</h1>
+            <input type="text" id="firstName" placeholder="Sudent first name"><br>
+            <input type="text" id="lastName" placeholder="Student last name"><br>
+            <input type="number" id="phoneNumber" placeholder="Student phone "><br>
+            <button id="submitData">Submit</button>
+        </div>
+        <div>
+            <h1>Student Lookup</h1>
+            <input type="number" id="phoneNumber" placeholder="Student phone"><br>
+            <button id="getData">Get data</button>
+        </div>
+        <div>
+            <h1>Update student information</h1>
+            <p>Selected student: <span id="SELECTEDSTUDENT">No student selected</span></p>
+            <DIV id="updateDataForm">
+                First Name: <input type="text" id="updateFirstName" placeholder="First Name"><br>
+                Last Name: <input type="text" id="updateLastName" placeholder="Last Name"><br>
+                Phone Number: <input type="number" id="updatePhoneNumber" placeholder="Phone number"><br><br>
+                <button id="updateData">Update student data</button>
+            </DIV>
+        </div>
+    </main>
+    
+    <script type="module">
+            import { initializeApp } 
+            from "https://www.gstatic.com/firebasejs/9.6.3/firebase-app.js";
+
+            import { getFirestore, addDoc, collection } 
+            from "https://www.gstatic.com/firebasejs/9.6.3/firebase-firestore.js"
+
+            const firebaseConfig = {
+                /*Absolutely not.*/
+            };
+            const app = initializeApp(firebaseConfig);
+            const db = getFirestore();
+
+        document.addEventListener("DOMContentLoaded", () => {
+            var firstName = document.querySelector("#firstName");
+            var lastName = document.querySelector("#lastName");
+            var phoneNumber = document.querySelector("#phoneNumber");
+            var button = document.querySelector("#submitData");
+
+
+            var updateFirstName = document.querySelector("#updateFirstName");
+            var updateLastName = document.querySelector("#updateLastName");
+            var updatePhoneNumber = document.querySelector("#updatePhoneNumber");
+            var updateButton = document.querySelector("#updateButton");
+            var selectedStudent = document.querySelector("#SELECTEDSTUDENT");
+
+            var updateDataForm = document.querySelector("#updateDataForm");
+
+            updateFirstName.value = firstName.value;
+            updateLastName.value = lastName.value;
+            updatePhoneNumber.value = phoneNumber.value;
+            selectedStudent.innerHTML = firstName.value;
+
+
+            if (selectedStudent.innerHTML != "No student selected") {
+                updateDataForm.style.display = "block";
+            } else {
+                updateDataForm.style.display = "none";
+            }
+            updateButton.addEventListener("click", () => {
+
+                
+            });
+
+
+           
+            button.addEventListener("click", () => {
+
+                if (firstName.value.length <= 3) {
+                    console.log("ur first name is not 3 characters or less (sorry joe)");
+                } else if (lastName.value.length <= 0) {
+                    console.log("i know people who have short last names, you are not one of them");
+                } else if (phoneNumber.value.length <= 7) {
+                    console.log("nah mate, you are *NOT* adding this to my database your phone number is too short");
+                } else {
+                    addDoc(collection(db, "students", phoneNumber.value), {
+                        firstName: firstName.value,
+                        lastName: lastName.value,
+                        phone: phoneNumber.value
+                    }
+                    ).then(() => {
+                        
+                        console.log("Congratulations, Benjamin!\nYou have successfully implemented a functional form that adds data to a database. WITHOUT the help of the great internet.");
+                        console.log("Success! \nData: \nFirst name: " + firstName.value + "\nLast name: " + lastName.value + "\nPhone number: " + phoneNumber.value)
+                    }).catch((error) => {
+                        console.log("You failed, what an absolute loser.")
+                    })
+                }
+            });
+        });
+      </script>
+</body>
+</html>

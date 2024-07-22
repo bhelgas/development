@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movies and books</title>
+    <style>
+        a {cursor:pointer;}
+    </style>
+</head>
+<body>
+    <div>
+        <a onclick="setPage('Homepage')">homepage</a>
+        <a onclick="setPage('About this item', 'Book')">book</a>
+        <a onclick="setPage('About this item', 'Movie')">movie</a>
+         <a onclick="setPage('Log in')">movie</a>
+
+        <div>
+            le page:
+            <div id="activePage">
+                
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        class Item {
+            constructor(name, description, type) {
+                this.name = name
+                this.description = description
+                this.type = type
+            }
+        }
+        class Book extends Item {
+            constructor(name, description, type, pages, author) {
+                super(name, description, type);
+                this.pages = pages
+                this.author = author
+            }
+        }
+        class Movie extends Item {
+            constructor(name, description, type, length, studio) {
+                super(name, description, type);
+                this.length = length
+                this.studio = studio
+            }
+        }
+
+        const leMovie = new Movie("Benjamin", "Very cool movie", "Movie", "2 hours 4 minutes", "Benjamin studios");
+        const leBook = new Book("Benjamin", "Very cool book", "Book", "342", "Benjamin Helgås")
+        
+        var userState = true;
+        var activePage = document.querySelector("#activePage");
+
+        function setPage(page, type) {
+            if(page == "Homepage") {
+                displayHomepage();
+            } else if (page == "About this item")  {
+                if(type == "Book")  {
+                    displayBook();
+                } else if(type == "Movie") {
+                    displayMovie();
+                }
+            } 
+        }
+
+        function displayHomepage() {
+            activePage.innerHTML = 
+            `
+            You're home
+            `
+        }
+        function displayBook(name, type) {
+            if(userState === true) {
+                Movie.forEach(movie => {
+                   activePage.innerHTML = 
+                   `
+                   ${movie.name} runs for ${movie.length}
+                   `
+
+                });
+                activePage.innerHTML = 
+                `
+                Logged in (book)
+                `
+            } else {
+                activePage.innerHTML = 
+                `
+                Logged out (book)
+                `
+            }
+        }
+        function displayMovie(name, type) {
+            if(userState === true) {
+                activePage.innerHTML = 
+                `
+                Logged in (movie)
+                `
+            } else {
+                activePage.innerHTML = 
+                `
+                Logged out (movie)
+                `
+            }
+        }
+    </script>
+</body>
+</html>
