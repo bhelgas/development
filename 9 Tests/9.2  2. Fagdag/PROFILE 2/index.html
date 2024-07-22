@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            padding-top: 20px; 
+            background-color: rgb(142, 196, 147);
+            align-items: center;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            background-color: white;
+            width: 50rem;
+            padding: 15px;
+            border-radius: 10px;
+            font-family: Arial, Helvetica, sans-serif;
+            max-width: 75rem;
+            resize: horizontal;
+        }
+        #profileBanner {
+            width: 100%;
+            display: flex;
+            background-image: url("https://picsum.photos/2000/300");
+            background-size: cover;
+            height: 12rem;
+            align-items: center;
+            border-radius: 5px;
+        }
+        #profilePicture {
+            border-radius: 5px;
+            width: 10rem;
+            height: 10rem;
+            margin-left: 1rem;
+            box-shadow: 0 0 10px rgb(85,85,85);
+        }
+        .profileInformation  {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        .profileDetails > h2, p {
+            color: white;
+            text-shadow: 0 0 10px black;
+        }
+        .profileCustomisation {
+            display: grid;
+            padding-left: 20px;
+            padding-right: 20px;
+            grid-template-columns: 1fr 2fr;
+            gap: 20px;
+        }
+        .profileMenu {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .profileMenu > .link {
+            padding: 10px;
+            border-radius: 10px;
+            transition: .2s ease-in-out;
+            cursor: pointer;
+        }
+        .profileMenu > .link.active {
+            background-color: rgb(142, 196, 147);
+            color: white;
+        }
+        .profileMenu > .link:hover {
+            background-color: rgb(142, 196, 147);
+            color: white;
+        }
+        .profileMenu > input, textarea, button {
+            background-color: #f4f4f486;
+            padding: 10px 15px 10px 15px;
+            border-radius: 10px;
+            border: 0;
+        }
+        .profileMenu > textarea {
+            height: 20rem;
+            resize: vertical;
+            box-sizing: border-box;
+        }
+        .profileMenu > button {
+            cursor: pointer;
+            transition: .3s ease-in-out;
+            text-transform: uppercase;
+        }
+        .profileMenu > button:hover {
+            background-color: rgb(142, 196, 147);
+            color: white;
+            letter-spacing: 10px;
+            font-weight: bolder;
+        }
+        input:focus + .labels
+        {
+            background-color:purple;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+   <main>
+        <div class="container">
+            <div id="profileBanner">
+                <div class="profileInformation">
+                    <img id="profilePicture" src="https://picsum.photos/200/200" alt="">
+                    <div class="profileDetails">
+                        <h2 id="userDisplayName">Benjamin Helgås</h2>
+                        <p><b id="userRole">Default User</b></p>
+                    </div>
+                </div>
+            </div>
+
+            <br><br>
+
+            <div class="profileCustomisation">
+                
+                <div class="profileMenu">
+                    <h4 class="link active">Edit profile</h4>
+                    <h4 class="link">Email preferences</h4>
+                    <h4 class="link">Your data</h4>
+                    <h4 class="link">Options</h4>
+                    <h4 class="link">Delete account</h4>
+                </div>
+                <div class="profileMenu">
+                    <label for="email">Email (Cannot be changed)</label>
+                    <input disabled type="text" name="" id="" placeholder="benjamin@helgaas.no">
+                    <label class="labels" for="username">Username</label>
+                    <input type="text" name="" id="" placeholder="@bbh">
+                    <label for="firstName">First name</label>
+                    <input type="text" name="" id="" placeholder="Benjamin">
+                    <label for="lastName">Last name</label>
+                    <input type="text" name="" id="" placeholder="Helgås">
+                    <label for="biography">Biography</label>
+                    <textarea id="biography">This is my biography</textarea>
+                   
+                    <button>Update profile</button>
+
+                </div>
+            </div>
+        </div>
+   </main>
+</body>
+</html>

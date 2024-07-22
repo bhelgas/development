@@ -1,0 +1,131 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+
+
+:root {
+    /* --text-color: white;
+    --secondary-text-color: black;
+    --background-color: #070407;
+    --primary-color: #c6a0ce;
+    --secondary-color: #6a3475;
+    --accent-color: #a649ba; */
+
+    --text-color: #e9f1ed;
+    --secondary-text-color: black;
+    --background-color: #0d1510;
+    --primary-color: #2e3431;
+    --secondary-color: #3c5b5f;
+    --accent-color: #81a0b0;
+}
+* {
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: "Plus Jakarta Sans", sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    height: 100dvh;
+    width: 100dvw;
+
+}
+header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px 50px 25px 50px;
+    border-bottom: 2px solid white;
+}
+header div {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+header div h3.link {
+    transition: .3s ease-in-out;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    padding-bottom: 0.5rem;
+    background-color: var(--primary-color);
+    padding: 5px 20px 5px 20px;
+    border-radius: 100px;
+}   
+header div h3.link:hover {
+    border-color: var(--text-color);
+}
+input {
+    padding: 5px 10px 5px 10px;
+    border-radius: 100px;
+    border: 1px solid var(--background-color);
+}
+#signedIn {
+    display: none;
+}
+main{
+    display: none;
+    padding: 20px;
+}
+.gridContainer {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 20px;
+}
+@media only screen and (max-width: 1000px) {
+    .gridContainer {
+        grid-template-columns: repeat(3,1fr);
+    }
+}
+article {
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    border-radius: 5px;
+    padding: 20px;
+}
+article img {
+    width: 100%;
+    object-fit: cover;
+}
+article .image {
+    display: flex;
+    width: 100%;
+    object-fit: cover;
+    box-sizing: border-box;
+    background-color: var(--background-color);
+    border-radius: 10px;
+    padding: 20px;
+}
+
+article button {
+    background-color: var(--background-color);
+    border-radius: 10px;
+    padding: 5px 10px 5px 10px;
+    border: 2px solid transparent;;
+    color: var(--text-color);
+    transition: .2s ease-in-out;
+    cursor: pointer;
+}
+article button:hover {
+    background-color: var(--primary-color);
+    border: 2px solid var(--text-color);
+}
+#loader {
+    position: fixed;
+    background-color: white;
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100dvw;
+    height: 100dvh;
+}
+img {
+    width: 20reM;
+    height: 20rem;
+}
+.flex {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}

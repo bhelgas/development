@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="icon" href="../../favicon.ico">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body onload="loaded()">
+    <div id="loader">
+        <h1>LOADING FIREBASE AND WEBSITE CONTENT</h1>
+    </div>
+    <header>
+        <div>
+            <h2>IT-support AS</h2>
+        </div>
+        <div id="userBlock">
+            <div id="signedOut">
+                <input type="text" id="userUsername" placeholder="Username">
+                <input type="text" id="userEmail" placeholder="Email">
+                <input type="password" id="userPassword" placeholder="Password">
+                <h3 class="link" id="signIn">Sign in</h3>
+                <h3 class="link" id="signUp">Sign up</h3> 
+            </div>
+            <div id="signedIn">
+                <h3 id="signedInContent"></h3>
+                <h3 class="link" id="signOut">Sign out</h3> 
+            </div>   
+            
+        </div>
+    </header>
+    <div id="userForm">
+        LOADING DATA
+    </div>
+
+
+    <main id="content">
+        <h1 id="recommendedForYou"></h1><h3>Based on your purchasing history</h3><br><br><br>
+        <div class="flex">
+            <article>
+                <h1>Alarm Clock</h1> 
+                <div class="image">
+                    <img src="https://pngimg.com/uploads/alarm_clock/alarm_clock_PNG19.png" alt="">
+                </div>
+                <p>Price: £15</p>
+                <button>Buy</button>
+            </article>
+
+            <article>
+                <h1>Alarm Clock</h1> 
+                <div class="image">
+                    <img src="https://pngimg.com/uploads/alarm_clock/alarm_clock_PNG19.png" alt="">
+                </div>
+                <p>Price: £15</p>
+                <button>Buy</button>
+            </article>
+
+
+            <article>
+                <h1>Alarm Clock</h1> 
+                <div class="image">
+                    <img src="https://pngimg.com/uploads/alarm_clock/alarm_clock_PNG19.png" alt="">
+                </div>
+                <p>Price: £15</p>
+                <button>Buy</button>
+            </article>
+
+            
+        </div>
+    </main>
+
+    
+
+    <script type="module" src="app.js"></script>
+    <script>
+        function loaded() {
+            const loader = document.querySelector("#loader");
+
+            setTimeout(() => {
+                loader.innerHTML = `Content loaded! Logging in...`;
+                setTimeout(() => {
+                    loader.style.display = "none";
+                }, 1000);
+            }, 1000);
+        }
+    </script>
+</body>
+</html>

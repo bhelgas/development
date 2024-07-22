@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="icon" href="../../favicon.ico">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body onload="loaded()">
+    <div id="loader">
+        <h1>LOADING FIREBASE AND WEBSITE CONTENT</h1>
+        <p>THis site uses cookies, you have 5 seconds to agree</p>
+    </div>
+    <header>
+        <div>
+            <h2>IT-support AS</h2>
+        </div>
+        <div id="userBlock">
+            <div id="signedOut">
+                <input type="text" id="userUsername" placeholder="Username">
+                <input type="text" id="userEmail" placeholder="Email">
+                <input type="password" id="userPassword" placeholder="Password">
+                <h3 class="link" id="signIn">Sign in</h3>
+                <h3 class="link" id="signUp">Sign up</h3> 
+            </div>
+            <div id="signedIn">
+                <h3 id="signedInContent"></h3>
+                <h3 class="link" id="signOut">Sign out</h3> 
+            </div>   
+            
+        </div>
+    </header>
+    <div id="userForm">
+        LOADING DATA
+    </div>
+
+
+    <main id="content">
+        <div>
+            <h1>Our courses</h1>
+            <h3>We have a wide selection of courses in software, hardware and HSE</h3>
+           <br>
+            <div class="flex">
+            <article>
+                <h1>Office 365</h1> 
+                <p>Price: £15</p>
+                <button>Enroll</button>
+            </article>
+            <article>
+                <h1>Microsoft Azure</h1> 
+                <p>Price: £15</p>
+                <button>Enroll</button>
+            </article>
+            <article>
+                <h1>Hardware basics</h1> 
+                <p>Price: £15</p>
+                <button>Enroll</button>
+            </article>
+            </div>
+        </div><br><br><br>
+        <div> 
+            <h1>Does any of your devices require some reparation?</h1>
+            <h3>We will fix it while you're taking a lunch break</h3>
+        <br>
+            <div class="flex">
+                <article>
+                    <h1>Water damage</h1> 
+                    <p>Price: £15</p>
+                    <button>Repair today</button>
+                </article>
+                <article>
+                    <h1>Accidental drops</h1> 
+                    <p>Price: £15</p>
+                    <button>Repair today</button>
+                </article>
+                <article>
+                    <h1>Restore lost files</h1> 
+                    <p>Price: £15</p>
+                    <button>Restore files!</button>
+                </article>
+            </div>
+        </div><br><br><br>
+        
+        <div>
+           <h1> Vist our webshop</h1>
+            <a href="./nettbutikk.html">By clicking here</a>
+        </div>
+    </main>
+
+    
+
+    <script type="module" src="app.js">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+        import { getFirestore, getDoc, setDoc, doc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+
+
+const firebaseConfig = {
+          /*We don't do this shit around here*/
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore();
+const auth = getAuth(app);
+
+// Variabler
+const userBlock = document.querySelector("#userBlock");
+const userForm = document.querySelector("#userForm");
+const content = document.querySelector("#content");
+const recommmendedForYou = document.querySelector("#recommendedForYou");
+
+const signIn = document.querySelector("#signIn");
+const signUp = document.querySelector("#signUp");
+const signOutUser = document.querySelector("#signOut");
+
+const signedOut = document.querySelector("#signedOut");
+const signedIn = document.querySelector("#signedIn");
+const signedInContent = document.querySelector("#signedInContent");
+
+// Get user data
+onAuthStateChanged(auth, async (user) => {
+    if (user) {
+        const uid = user.uid;
+        const docSnap = await getDoc(doc(db, "users/" + user.email));
+        if(docSnap.exists()) {
+            signedOut.style.display = "none";
+            signedIn.style.display = "flex";
+            content.style.display = "block";
+            userForm.style.display = "none";
+            recommmendedForYou.innerHTML = `Recommended for you ${docSnap.data().username}`;
+
+            signedInContent.innerHTML = 
+            `
+            Welcome back, ${docSnap.data().username}
+            `
+            console.log(`User: ${docSnap.data().username} (${uid}) signed in`);
+        } else {
+            console.error("This user does not have any data, ending session.");
+            signOut(auth);
+        }   
+    } else {
+        signedOut.style.display = "flex";
+        signedIn.style.display = "none";
+        content.style.display = "none";
+        userForm.style.display = "block";
+        userForm.innerHTML = "<h1 style='margin: 50px;'>Login or sign up to access this content</h1>";
+    }
+});
+
+signOutUser.addEventListener('click', () => {
+    signOut(auth)
+    .then(() => {
+        console.log("User signed out");
+        signedOut.style.display = "flex";
+        signedIn.style.display = "none";
+    })
+    .catch((error) => {
+        console.log(`Could not sign out user: ${error.message}`);
+    })
+})
+
+
+// Signing up new users
+signIn.addEventListener('click', () => {
+    const email = document.querySelector("#userEmail").value;
+    const password = document.querySelector("#userPassword").value;
+    const username = document.querySelector("#userUsername").value;
+    
+    signInWithEmailAndPassword(auth, email, password) 
+    .then( async (userCredential) => {
+        const user = userCredential.user;
+    })
+    .catch((error) => {
+        console.error(`Error signing in user: ${error.message}`);
+    }) 
+});
+
+
+// Signing in existing users
+signUp.addEventListener('click', () => {
+    const email = document.querySelector("#userEmail").value;
+    const password = document.querySelector("#userPassword").value;
+    const username = document.querySelector("#userUsername").value;
+
+    createUserWithEmailAndPassword(auth, email, password) 
+    .then( async (userCredential) => {
+        const user = userCredential.user;
+        setDoc(doc(db, "users/" + user.email), {
+            username: username,
+            email: email
+        });
+    })
+    .catch((error) => {
+        console.error(`Error creating user: ${error.code} /// ${error.message}`);
+    });
+});
+
+
+
+
+    </script>
+    <script>
+        function loaded() {
+            const loader = document.querySelector("#loader");
+
+            setTimeout(() => {
+                loader.innerHTML = `Content loaded! Logging in...`;
+                setTimeout(() => {
+                    loader.style.display = "none";
+                }, 9000);
+            }, 10000);
+        }
+    </script>
+</body>
+</html>

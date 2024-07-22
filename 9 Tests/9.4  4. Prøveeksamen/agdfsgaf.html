@@ -1,0 +1,128 @@
+<script>
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, doc, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+          /*We don't do this shit around here*/
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth();
+const db = getFirestore(app);
+
+const signUpbtn = document.getElementById("signUpbtn");
+const signInbtn = document.getElementById("signInbtn");
+const deleteAccountBtn = document.getElementById("deleteAccountBtn");
+const signOutBtn = document.getElementById("signOutBtn");
+
+signUpbtn.addEventListener('click', async () => {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    const navn = document.getElementById("navn").value;
+    const fornavn = document.getElementById("fornavn").value;
+    const role = document.querySelector("#role").value;
+
+    try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+        await setDoc(doc(db, "Brukere", user.uid), { navn, fornavn, role }); // Store user data
+        alert("You have signed up successfully!");
+        window.location.href = "/main.html"; 
+    } catch (error) {
+        alert(error.message); // Display the error message to the user
+    }
+});
+
+signInbtn.addEventListener("click", async () => {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    try {
+        await signInWithEmailAndPassword(auth, email, password);
+        alert("You have successfully signed in!");
+        window.location.href = "/main.html";
+    } catch (error) {
+        alert(error.message); 
+    }
+});
+
+deleteAccountBtn.addEventListener('click', async () => {
+    const user = auth.currentUser; // Get the currently logged-in user
+
+    if (user) {
+        const confirmed = confirm("Are you sure you want to delete your account? This action is irreversible.");
+        if (confirmed) {
+            try {
+                // 1. Delete User Data from Firestore
+                await deleteDoc(doc(db, "Brukere", user.uid));
+
+                // 2. Delete User from Firebase Authentication
+                await user.delete();
+
+                alert("Your account has been deleted successfully.");
+                window.location.href = "/index.html"; // Redirect to sign-in/sign-up page
+            } catch (error) {
+                alert("Error deleting account: " + error.message);
+            }
+        }
+    } else {
+        alert("You need to be signed in to delete your account.");
+    }
+});
+
+signOutBtn.addEventListener("click", async () => {
+    try {
+        await auth.signOut();
+        alert("You have been signed out.");
+        window.location.href = "index.html"; // Redirect to index.html
+    } catch (error) {
+        alert("Error signing out: " + error.message);
+    }
+});
+
+const screenReaderBtn = document.createElement("button");
+screenReaderBtn.textContent = "Start Screen Reader";
+screenReaderBtn.style.marginTop = "20px"; // Add some margin
+document.querySelector(".sign").appendChild(screenReaderBtn);
+
+let isReading = false;
+let utterance = null;
+
+screenReaderBtn.addEventListener('click', () => {
+    const textToSpeech = window.speechSynthesis;
+    const elementsToRead = document.querySelectorAll('.sign h1, .sign label, .sign input, .sign select, .sign option, .sign button'); 
+    
+    if (!isReading) {
+        isReading = true;
+        screenReaderBtn.textContent = "Stop Screen Reader";
+
+        utterance = new SpeechSynthesisUtterance();
+        utterance.lang = 'en-US'; // Set the language 
+
+        let currentElementIndex = 0;
+        
+        utterance.onend = () => {
+            currentElementIndex++;
+            if (currentElementIndex < elementsToRead.length) {
+                utterance.text = elementsToRead[currentElementIndex].textContent;
+                textToSpeech.speak(utterance);
+            } else {
+                isReading = false;
+                screenReaderBtn.textContent = "Start Screen Reader";
+            }
+        };
+        
+        utterance.text = elementsToRead[currentElementIndex].textContent;
+        textToSpeech.speak(utterance);
+    } else {
+        isReading = false;
+        screenReaderBtn.textContent = "Start Screen Reader";
+        if (utterance) {
+            textToSpeech.cancel(); // Stop current speech
+        }
+    }
+});
+
+
+</script>

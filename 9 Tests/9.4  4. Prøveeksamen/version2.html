@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f4f4f4;
+        }
+        header {
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            width: 100dvw;
+            text-align: center;
+        }
+        main {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        input, select, button,option {
+            background-color: #f4f4f4;
+            border: 0;
+            outline: 0;
+            padding: 5px 10px 5px 10px;
+            border-radius: 5px;
+            transition: .3s ease-in-out;
+        }
+        button{
+            cursor: pointer;
+        }
+        .block {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px #dddddd;
+        }
+        .button_flex {
+            display: flex;
+            justify-content: space-between;
+        }
+        #delete_user_data {
+            background-color: rgba(220, 20, 60, 0.19);
+        }
+        button:hover {
+            filter:brightness(.9);
+        }
+        *:focus {
+            outline: 2px solid crimson;
+        }
+        #school_resources {
+            display: none;
+            flex-direction: column;
+            margin-top: 10rem;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2,1fr);
+            gap: 20px;
+        }
+        
+        .grid > div {
+            background-color: white;
+            padding: 10px 20px 10px 20px;
+            border-radius: 10px;
+            overflow: auto;
+            box-shadow: 0 0 10px #dddddd;
+        }
+        .photos_grid {
+            display: flex;
+            gap: 10px;
+
+        }
+        .photos_grid > img {
+            border-radius: 10px;
+        }
+        @media only screen and ( max-width: 1000px ) {
+            main {
+                grid-template-columns: 1fr;
+            }
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .week_schedule_image {
+            aspect-ratio: 1/0.5;
+            width: 100%;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header><h1>Welcome to Sørvær Oppvekstsenter</h1></header>
+    <main>
+        <div class="block">
+            <h1>Create an account</h1>
+           <form action="">
+            <input type="text" name="user_first_name" id="user_first_name" placeholder="First name">
+            <input type="text" name="user_last_name" id="user_last_name" placeholder="Last name">
+            <select name="user_role" id="user_role">
+                <option value="IT">IT</option>
+                <option value="Teacher">Teacher</option>
+                <option value="Student">Student</option>
+                <option value="Guest">Guest</option>
+            </select>
+            <input type="text" name="user_address" id="user_address" placeholder="Address">
+            <input type="phone" name="user_phone_number" id="user_phone_number" placeholder="Phone number">
+            &nbsp;
+            <h3 style="margin: 0;">Data required to log in</h6>
+            <input type="email" name="user_email" id="user_email" placeholder="E-Mail" required>
+            <input type="password" name="user_password" id="user_password" placeholder="Password" required>
+            <div class="button_flex">
+                <div>
+                    <button id="user_signup">Create account</button>
+                    <button id="user_signin">Log in</button>
+                    <button id="find_user_data">Find user</button>
+                </div>
+            </div>
+           </form>
+
+        </div>
+        <div class="block" id="user_data">
+        </div>
+        <div class="block" id="display_data_block">
+        </div>
+
+
+    </main>
+
+
+    <footer id="school_resources">
+        <h1 style="align-self: center;">School resources</h1>
+        <section class="grid">
+            <div>
+                <h2>Photos</h2>
+                <div class="photos_grid" id="photo">
+                    <img src="https://picsum.photos/200" alt="Randomly generated image">
+                    <img src="https://picsum.photos/201" alt="Randomly generated image">
+                    <img src="https://picsum.photos/202" alt="Randomly generated image">
+                    <img src="https://picsum.photos/203" alt="Randomly generated image">
+                    <img src="https://picsum.photos/204" alt="Randomly generated image">
+                    <img src="https://picsum.photos/205" alt="Randomly generated image">
+                </div>
+            </div>
+            <div>
+                <h2>Week schedule</h2>
+                <div id="week_schedule">
+                    <img class="week_schedule_image" src="http://helgaas.no/Screenshot_20240514_120123.png" alt="">
+                </div>
+            </div>
+        </section>
+    </footer>
+
+    <script type="module">
+        import { initializeApp } 
+        from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+        
+        import { getFirestore, addDoc, collection, doc, setDoc, getDoc, updateDoc, getDocs, deleteDoc } 
+        from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } 
+        from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+
+
+        const firebaseConfig = {
+            apiKey: "nej",
+            authDomain: "nej",
+            projectId: "nej",
+            storageBucket: "nej",
+            messagingSenderId: "nej",
+            appId: "nej"
+            };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+
+        // Authentication
+        var user_email = document.querySelector("#user_email");
+        var user_password = document.querySelector("#user_password");
+
+            // User data on registration
+            var user_first_name = document.querySelector("#user_first_name");
+            var user_last_name = document.querySelector("#user_last_name");
+            var user_role = document.querySelector("#user_role");
+            var user_address = document.querySelector("#user_address");
+            var user_phone_number = document.querySelector("#user_phone_number");
+        
+        var user_email_input_field = document.querySelector("#user_email_input_field");
+            // Buttons
+            var user_signin = document.querySelector("#user_signin");
+            var user_signup = document.querySelector("#user_signup")
+
+            var find_user_data = document.querySelector("#find_user_data");
+            var delete_user_data = document.querySelector("#delete_user_data");
+
+        var display_data_block = document.querySelector("#display_data_block");
+
+        var school_resources = document.querySelector("#school_resources");
+
+        onAuthStateChanged(auth, (user) => {
+            if(user) {
+                console.log("User logged in!");
+                display_data(user);
+                school_resources.style.display = "flex";
+            } else {
+                hide_data();
+                console.log("User not logged in!");
+                school_resources.style.display = "none";
+            }
+        });
+
+        user_signin.addEventListener("click", async (sign_in_form) => {
+            sign_in_form.preventDefault();
+            signInWithEmailAndPassword(auth, user_email.value, user_password.value)
+            .then( async () => {
+                var doc_ref = await doc(db, "Users/" + user_email.value);
+                var doc_snap = await getDoc(doc_ref);
+                alert(`Welcome back ${doc_snap.data().user_first_name}! You are logged in as a(n) ${doc_snap.data().user_role.toLowerCase()}.`);
+            }) 
+            .catch((error) => {
+                throw new Error(error);
+            })
+        });
+
+        user_signup.addEventListener("click", async (sign_up_form) => {
+            sign_up_form.preventDefault();
+            createUserWithEmailAndPassword(auth, user_email.value, user_password.value)
+            .then(() => {
+                setDoc(doc(db, "Users/" + user_email.value), {
+                    user_first_name: user_first_name.value,
+                    user_last_name: user_last_name.value,
+                    user_email: user_email.value,
+                    user_role: user_role.value,
+                    user_address: user_address.value,
+                    user_phone_number: user_phone_number.value
+                })
+            })
+            .catch((error) => {
+                throw new Error(error);
+            })
+        });
+
+        find_user_data.addEventListener("click", async (find_user_data_form) => {
+            find_user_data_form.preventDefault();
+            var doc_snap_priveliges = await getDoc(doc(db, "Users/" + auth.currentUser.email));
+            if(doc_snap_priveliges.data().user_role != "IT") {
+                alert("Sorry, you do not have permission to get information about an account.");
+            } else {
+             var doc_snap = await getDoc(doc(db, "Users/" + user_email.value));
+                user_data.innerHTML = 
+            `
+                <h1>User data for user ${doc_snap.data().user_first_name}</h1>
+                <p>
+                <b>Full name</b>: ${doc_snap.data().user_first_name} ${doc_snap.data().user_last_name}<br> 
+                <b>Email: </b>: ${doc_snap.data().user_email}<br> 
+                <b>Role</b>: ${doc_snap.data().user_role}<br> 
+                <b>Address</b>: ${doc_snap.data().user_address}<br> 
+                <b>Phone number</b>: ${doc_snap.data().user_phone_number}<br> 
+                </p>
+            `
+            }
+        })
+
+        async function display_data(user_data) {
+            const doc_snap = await getDoc(doc(db, "Users/" + user_data.email));
+            var week_schedule = document.querySelector("#week_schedule");
+            var photo = document.querySelector("#photo");
+            
+            display_data_block.innerHTML = 
+            `
+            <h1>Manage your account</h1>
+            <h3>First name:</h3>
+            <input type="text" id="update_user_first_name" value="${doc_snap.data().user_first_name}">
+            <h3>Last name:</h3>
+            <input type="text" id="update_user_last_name" value="${doc_snap.data().user_last_name}">
+            <h3>Address:</h3>
+            <input type="text" id="update_user_address" value="${doc_snap.data().user_address}">
+            <h3>Phone number:</h3>
+            <input type="phone" id="update_user_phone_number" value="${doc_snap.data().user_phone_number}">
+            <br><br>
+            <div class="button_flex">
+                <div>
+                    <button id="update_user_data">Update data</button>
+                </div>
+                <div>
+                    <button id="signout">Sign out</button>
+                    <button id="delete_user_data">Delete your account</button>
+                </div>
+            </div>
+            
+            `
+
+            
+        }
+
+    
+
+        document.addEventListener("click", async (e) => {
+            if(e.target.closest("#signout")) {
+                signOut(auth)
+                .then( async () => {
+                    console.log("You've been signed out");
+                })
+                .catch((error) => {
+                    throw new Error("Could not sign you out: " + error)
+                })
+            } else if (e.target.closest("#delete_user_data")) {
+                if(confirm("Are you sure you want to delete your account and data? This action cannot be undone.") == true) {
+                    await deleteUser(auth.currentUser)
+                    .then( async () => {
+                        var doc_ref = await doc(db, "Users/" + user_email.value);
+                        deleteDoc(doc_ref);
+                        alert("Account deleted.");
+                    })
+                    .catch((error) => {
+                        throw new Error(error);
+                    });
+                }
+            } else if (e.target.closest("#update_user_data")) {
+                const doc_ref = await doc(db, "Users/" + auth.currentUser.email);
+                var update_user_first_name = document.querySelector("#update_user_first_name");
+                var update_user_last_name = document.querySelector("#update_user_last_name");
+                var update_user_address = document.querySelector("#update_user_address");
+                var update_user_phone_number = document.querySelector("#update_user_phone_number");
+                updateDoc(doc_ref, {
+                    user_first_name: update_user_first_name.value,
+                    user_last_name: update_user_last_name.value,
+                    user_address: update_user_address.value,
+                    user_phone_number: update_user_phone_number.value
+                }) .then(() => {
+                    console.log("Data updated");
+                    alert("Your data has been updated!");
+                }) .catch((error) => {
+                    throw new Error("Error updating user data: " + error);
+                })
+            }
+        })
+
+        function hide_data() {
+            display_data_block.innerHTML = "";
+        }
+</script>
+</body>
+</html>

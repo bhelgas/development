@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            display: flex;
+            align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            justify-content: center;
+            height: 100dvh;
+            background-image: url("https://i.pinimg.com/736x/b2/fb/21/b2fb21f206c56acc2007ed7e587d9770.jpg");
+            background-size: cover;
+            color: white;
+            backdrop-filter: blur(1rem);
+        }
+
+        div.register {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            border: 3px solid rgba(255, 255, 255, 0.062);
+            position: fixed;
+            top: auto;
+            right: auto;
+            left: auto;
+            background-color: rgba(0, 0, 0, 0.194);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.135);
+            backdrop-filter: blur(4rem);
+            padding: 15px;
+            border-radius: 10px;
+            max-width: 50rem;
+            width: 30rem;
+            min-width: 20rem;
+        }
+        input,button,textarea, select, option {
+            color-scheme: dark;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.189);
+            background-color: rgba(0, 0, 0, 0.185);;
+            color: white;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        ::placeholder {
+           color: white;
+        }
+        option, select {
+            color-scheme: dark;
+        }
+        .register > div {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        label {
+            font-size: 1rem;
+            font-weight:600;
+        }
+    </style>
+</head>
+<body>
+    <div class="register">
+        <h2>Create your account</h2>
+                <div>
+                    <label for="">Upload profile banner</label>
+                    <input type="file" name="" id="linkToCustomImage" accept="image/*" required>
+                </div>
+                <div>
+                    <label for="">Upload profile picture</label>
+                <input type="file" name="" id="linkToCustomProfileImage" accept="image/*" required>
+                </div>
+                <div>
+                    <label for="">Username</label>
+                <input type="text" name="" id="username" placeholder="Username" required>
+                </div>
+                <div>
+                    <label for="">First name</label>
+                <input type="text" name="" id="firstName" placeholder="First name" required>
+                </div>
+                <div>
+                    <label for="">Last name</label>
+                    <input type="text" name="" id="lastName" placeholder="Last name" required>
+                </div>
+                <div>
+                    <label for="">Password</label>
+                    <input type="password" id="password" placeholder="Password" required>
+                </div>
+                <div>
+                    <label for="">Biography</label>
+                    <textarea name="" id="biography" cols="30" rows="10" required>
+                    </textarea>
+                </div>
+                <div>
+                    <label for="">User role</label>
+                    <select name="" id="role"  required>
+                        <option value="Administrator">Administrator</option>
+                        <option value="Teacher">Teacher</option>
+                        <option value="Student">Student</option>
+                        <option value="Guest">Guest</option>
+                    </select>
+                </div>
+                <button id="createAccount">Create account</button>
+    </div>
+
+
+
+
+    <script type="module">
+        import { initializeApp } 
+        from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+
+        import { getFirestore, updateDoc, addDoc, collection,doc, setDoc, getDoc, getDocs, deleteDoc } 
+        from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        import { getStorage, ref, uploadBytes, getDownloadURL } 
+        from "https://www.gstatic.com/firebasejs/10.8.1/firebase-storage.js";
+        
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "nej",
+            authDomain: "nej",
+            projectId: "nej",
+            storageBucket: "nej",
+            messagingSenderId: "nej",
+            appId: "nej"
+        };
+
+        
+    </script>
+</body>
+</html>

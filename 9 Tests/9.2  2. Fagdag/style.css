@@ -1,0 +1,60 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+body {
+    display: grid;
+    align-items: center;
+    height: 100dvh;
+    background-color: #f4f4f4;
+    color: black;
+    font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+header {
+    display: flex;
+    align-items: center;
+    padding:15px 15px 15px 15px;
+    border-radius: 10px;
+    background-color: white;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    position: absolute;
+    box-shadow: 0 0 10px rgba(10, 0, 0, 0.126);
+}
+main {
+    display: grid;
+    grid-template-columns: repeat(3,0.6fr);
+    gap: 10px;
+    padding: 20px;
+}
+main section {
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(10, 0, 0, 0.126);
+    padding: 20px;
+}
+main section h1 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+main section svg {
+    height: 30px;
+    width: 30px;
+}
+input, button, select {
+    all: unset;
+    color: black;
+    border: 1px solid black;
+    border-radius: 2px;
+    padding: 5px 10px 5px 10px;
+    margin: 5px 5px 5px 0px;
+    width: 100%;
+    box-sizing: border-box;
+}
+button:hover {
+    cursor: pointer;
+    background-color: #f4f4f4;
+
+}

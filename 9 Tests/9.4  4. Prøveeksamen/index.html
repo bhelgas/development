@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            background-color: #f4f4f4;
+            width: 100dvw;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .page {
+            display: flex;
+        }
+        #logged_out {
+            flex-direction: column;
+            background-color: white;
+            padding: 10px;
+            border-radius: 5px;
+            gap: 10px;
+            width: 40rem;
+        }
+        #logged_in {
+            flex-direction: column;
+
+        }
+        input,button {
+            background-color: white;
+            color: black;
+            padding: 5px 10px 5px 10px;
+            border: 2px solid black;;
+            border-radius: 10px;
+            outline: 0;
+            transition: .2s ease-in-out;
+        }
+        input:hover, button:hover {
+            border-color: crimson;
+            box-shadow: 0px 0px 10px crimson;
+        }
+        input:focus {
+            border-color: crimson;
+        }
+        button.highlighted {
+            border-color: crimson;
+        }
+        button.highlighted:hover {
+            box-shadow: 5px 5px 0px black;
+        }
+
+        .grid {
+            display: grid;
+            overflow-y: auto;
+            grid-template-columns: repeat(20, 1fr);
+            grid-template-rows: repeat(2,1fr);
+            gap: 10px;
+            padding: 20px;
+        }
+        .grid > img {
+            height: 200px;
+            width: 300px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="logged_out" class="page">
+        You are logged out
+        <div>
+            <h3 style="margin: 0;">Velkommen til Sørvær fengsel</h3>
+            <p style="margin: 0;">Logg inn eller lag en bruker</p>
+        </div>
+        <br>
+        <input type="text" name="username" id="username_input" placeholder="Brukernavn">
+        <input type="email" name="email" id="email_input" placeholder="Epost">
+        <input type="password" name="password" id="password_input" placeholder="Passord">
+        <button id="sign_in">Logg inn</button>
+        <button id="sign_up" class="highlighted">Lag en ny bruker</button>
+    </div> 
+    <div id="logged_in" class="page">
+        <button style="width: 20rem;" id="sign_out">Sign out</button>
+        <br><br><br>
+        <h1>Ukeplan</h1>
+        <div style="padding: 20px">
+            <img style="border-radius: 10px;" src="http://helgaas.no/Screenshot_20240514_120123.png" height="460" width="700" alt="">
+            
+        </div>
+        <h1>Bilder</h1>
+        <div class="grid">
+            <img src="https://picsum.photos/200/300" alt="">
+            <img src="https://picsum.photos/201/300" alt="">
+            <img src="https://picsum.photos/202/300" alt="">
+            <img src="https://picsum.photos/203/300" alt="">
+            <img src="https://picsum.photos/204/300" alt="">
+            <img src="https://picsum.photos/205/300" alt="">
+            <img src="https://picsum.photos/206/300" alt="">
+            <img src="https://picsum.photos/200/301" alt="">
+            <img src="https://picsum.photos/201/300" alt="">
+            <img src="https://picsum.photos/202/302" alt="">
+            <img src="https://picsum.photos/203/303" alt="">
+            <img src="https://picsum.photos/204/304" alt="">
+            <img src="https://picsum.photos/205/305" alt="">
+            <img src="https://picsum.photos/206/306" alt="">
+            <img src="https://picsum.photos/200/307" alt="">
+            <img src="https://picsum.photos/201/308" alt="">
+            <img src="https://picsum.photos/202/309" alt="">
+            <img src="https://picsum.photos/203/310" alt="">
+            <img src="https://picsum.photos/204/320" alt="">
+            <img src="https://picsum.photos/205/330" alt="">
+            <img src="https://picsum.photos/206/340" alt="">
+            <img src="https://picsum.photos/200/350" alt="">
+            <img src="https://picsum.photos/201/350" alt="">
+            <img src="https://picsum.photos/212/300" alt="">
+            <img src="https://picsum.photos/223/300" alt="">
+            <img src="https://picsum.photos/234/300" alt="">
+            <img src="https://picsum.photos/245/300" alt="">
+            <img src="https://picsum.photos/256/300" alt="">
+        </div>
+    </div>
+</body>
+
+
+<script type="module">
+    import { initializeApp } 
+    from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+    
+    import { getFirestore, addDoc, collection,doc, setDoc, getDoc, getDocs, deleteDoc } 
+    from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } 
+    from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+
+
+    const firebaseConfig = {
+              /*We don't do this shit around here*/
+    };
+
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore();
+    const auth = getAuth(app);
+
+    var logged_out = document.querySelector("#logged_out");
+    var logged_in = document.querySelector("#logged_in");
+
+    var username_input = document.querySelector("#username_input");
+    var email_input = document.querySelector("#email_input");
+    var password_input = document.querySelector("#password_input");
+
+    var sign_in = document.querySelector("#sign_in");
+    var sign_up = document.querySelector("#sign_up");
+
+    onAuthStateChanged(auth, async (user) => {
+        if(user) {
+            logged_out.style.display = "none";
+            logged_in.style.display = "flex";
+            alert(user.email)
+        } else {
+            logged_out.style.display = "flex";
+            logged_in.style.display = "none";
+        }
+    })
+
+    sign_in.addEventListener('click', async () => {
+        signInWithEmailAndPassword(auth, email_input.value, password_input.value)
+        .then(() => {
+            console.log("User logged in.");
+        })
+        .catch((error) => {
+            throw new Error(error);
+        })
+    })
+    
+    sign_up.addEventListener('click', async () => {
+        createUserWithEmailAndPassword(auth, email_input.value, password_input.value)
+        .then(() => {
+            setDoc(doc(db, "User/", username_input.value), {
+                username: username_input.value,
+                email: email_input.value,
+            })
+            console.log("User signed up.");
+        })
+        .catch((error) => {
+            throw new Error(error);
+        })
+    })
+
+    sign_out.addEventListener('click', async () => {
+        signOut(auth)
+        .then(() => {
+            console.log("Signed out");
+        })
+        .catch((error) => {
+            throw new Error(error);
+        })
+    })
+    
+</script>
+</html>

@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        header#savedBanner {
+            display: none;
+            position: fixed;
+            background-color: rgb(48, 219, 142);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.411);
+            top: 1rem;
+            left: 10%;
+            right: 10%;
+            text-align: center;
+            padding: 10px;
+            z-index: 1030220;
+            border-radius: 10px;
+        }
+        main {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 50px;
+        }
+        section.profile {
+            padding: 20px;
+            margin-top: 2.5rem;
+            width: 50rem;
+            height: auto;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.066);
+            border-radius: 10px;
+        }
+        section.profile #profileImage {
+            background-color: rgb(255, 255, 255);
+                width: 100%;
+                box-sizing: border-box;
+                margin-bottom: 10px;;
+                height: 10rem;
+                object-fit: cover;
+                background-repeat: no-repeat;
+                background-size: cover;
+                z-index: 999;
+                display: grid;
+                grid-template-columns: 15rem auto;
+                align-items: end;
+                border-top-right-radius: 5px;
+                border-top-left-radius: 5px;
+        }
+
+        section.profile img#profilePicture {
+            border-radius:5px;
+            height: 10rem;
+            width: 10rem;
+            background-color: rgb(255, 255, 255);
+            transform: translateY(2.5rem) translateX(2rem);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.411);
+        }
+        #profileImageText {
+
+            z-index: 1000;
+            color: white;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.822);
+        }
+        input, button, select, textarea {
+                width: 100%;
+                box-sizing: border-box;
+                background-color: #f4f4f4;
+                max-height: 20rem;
+                min-width: 100%;
+                padding: 5px 10px 5px 10px;
+                border: 1px solid black;
+                border-radius: 2.5px;
+                background-color: white;
+                padding: 10px;
+        }
+        textarea {
+            min-height: 5rem;
+            
+        }
+        #popup {
+            backdrop-filter: blur(0.5rem);
+            flex-direction: column;
+            z-index: 2000;
+            border-radius: 10px;
+            position: fixed;
+            left: 10%;
+            right: 10%;
+            top: 10%;
+            bottom: 10%;
+            background-color: rgba(255, 255, 255, 0);
+            box-shadow:  0 0 10px rgba(0, 0, 0, 0.066);
+            padding: 20px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        h1,h4 {
+            margin: 0;
+        }
+        p {
+            margin: 0;;
+        }
+        input.login, button.login {
+            background-color: #f4f4f4;
+            all: unset;
+            padding: 5px;
+            border: 3px solid black;
+            border-radius: 2.5px;
+            width: 10rem !important;
+        }
+        i {
+            font-size: 1rem;
+            font-style: normal;
+        }
+        img {
+            object-fit: cover;
+        }
+        input, textarea, select, button {
+            border: 1.4px solid blacK;
+        }
+        .biography {
+            background-color: white;
+            width: 20rem;
+            padding: 10px;
+            min-height: 10rem;
+            box-shadow: 0 0 10px rgba(146, 141, 141, 0.053);;
+        }
+        #userSettings {
+            padding: 20px;
+            box-sizing:  border-box; 
+        }
+        .grid {
+            margin-top: 4rem;
+            display: grid;
+            grid-template-columns: 13rem auto;
+            gap: 10px;
+        }
+        .gridItem {
+            padding:10px;
+            padding-top: 0;
+        }
+        ul {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            list-style-type: none;
+            width: 100%;
+        }
+        li a#active {
+            background-color: #f4f4f4;
+            color: black;
+            text-decoration: none;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        li a {
+            color: black;
+            text-decoration: none;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        li a:hover {
+            background-color: #f4f4f4;
+            color: black;
+            text-decoration: none;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        li a#deleteAccount {
+            border: 1px solid rgb(231, 11, 11);
+            color: rgb(231, 11, 11);;
+        }
+        #hiddenSidebar {
+            display: none;
+        }
+        .DELETE_choices {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 35px;
+        }
+        #profilePicture {
+            border: 1px solid black;
+            border-radius: 5px !important;
+        }
+    </style>
+</head>
+<body>
+    <header id="savedBanner">Settings updated! Please log back in for the settings to take effect.</header>
+    <section class="profile">
+        <div id="profileImage">
+            <img src="" id="profilePicture" alt="">
+            <div id="profileImageText">
+                <h1 id="profileName">Username</h1>
+                <p id="profileRole">Role</p><br><br>
+            </div>
+        </div>
+        <div class="grid">
+            <div class="gridItem"><br><br>
+               <ul id="hiddenSidebar">
+                    <li><a id="active" href="#">Personal Information</a></li>
+                    <li><a href="#">Notifications</a></li>
+                    <li><a href="#">Settings</a></li>
+                    <li><a href="#">Email preferences</a></li>
+                    <li><a href="#" onclick="menuOptions()">Delete account</a></li>
+               </ul>
+            </div>
+            <div class="gridItem" id="userSettings"> 
+             </div>
+
+        </div>
+        
+        <br><br><br><br><br><br>
+        
+    </section>
+    <input  class="login" type="email" name="" placeholder="Email" id="email">
+    <input class="login" type="password" name=""" placeholder="Password" id="password">
+    <button class="login" id="login">LOG IN</button>
+    <div id="popup">
+        <h1>Are you sure you want to delete your account?</h1>
+        <br>
+        <p>This action cannot be reverted</p>
+        <div class="DELETE_choices">
+            <button id="deleteAccount">Yes please proceed</button>
+            <button onclick="menuOptions()">Nevermind</button>
+        </div>
+    </div>
+    <br><br>
+    <main>
+
+        
+        <section class="profile">
+            <h4>Create an account</h4>
+            <br><br>
+                <label for="">Upload profile banner</label>
+                <input type="file" name="" id="linkToCustomImage" accept="image/*" required><br><br>
+                <label for="">Upload profile picture</label>
+                <input type="file" name="" id="linkToCustomProfileImage" accept="image/*" required><br><br>
+                <label for="">Email</label>
+                <input type="email" name="" id="createEmail" placeholder="Email" required><br><br>
+                <label for="">Username</label>
+                <input type="text" name="" id="username" placeholder="Username" required><br><br>
+                <label for="">First name</label>
+                <input type="text" name="" id="firstName" placeholder="First name" required><br><br>
+                <label for="">Last name</label>
+                <input type="text" name="" id="lastName" placeholder="Last name" required><br><br>
+                <label for="">Password</label>
+                <input type="password" id="createPassword" placeholder="Password" required><br><br>
+                <textarea name="" id="biography" cols="30" rows="10" required>
+                </textarea><br><br>
+                <select name="" id="role"  required>
+                    <option value="Administrator">Administrator</option>
+                    <option value="Teacher">Teacher</option>
+                    <option value="Student">Student</option>
+                    <option value="Guest">Guest</option>
+                </select><br><br>
+                <button id="createAccount">Create account</button>
+        </section>
+        
+    </main>
+        
+    
+
+   
+    <script type="module">
+        import { initializeApp } 
+        from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+
+        import { getFirestore, updateDoc, addDoc, collection,doc, setDoc, getDoc, getDocs, deleteDoc } 
+        from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        import { getStorage, ref, uploadBytes, getDownloadURL, uploadBytesResumable } 
+        from "https://www.gstatic.com/firebasejs/10.8.1/firebase-storage.js";
+
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } 
+        from 'https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js'
+
+        
+        // Firebase configuration
+        const firebaseConfig = {
+                   /*We don't do this shit around here*/
+        };
+        // Initialise firebase and its config
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore();
+        const storage = getStorage(app);
+        const auth = getAuth();
+       
+        var email = document.querySelector("#email");
+        var password = document.querySelector("#password");
+        var login = document.querySelector("#login");
+        var deleteAccount = document.querySelector("#deleteAccount");
+        var profileImage = document.querySelector("#profileImage");
+        var profileName = document.querySelector("#profileName");
+        var profileBiography = document.querySelector("#profileBiography");
+        var profileRole = document.querySelector("#profileRole");
+        var profilePicture = document.querySelector("#profilePicture");
+        var userLogin = document.querySelector("#userLogin");
+
+        var linkToCustomImage = document.querySelector("#linkToCustomImage");
+        var linkToCustomProfileImage = document.querySelector("#linkToCustomProfileImage");
+        var username = document.querySelector("#username");
+        var createEmail = document.querySelector("#createEmail");
+        var firstName = document.querySelector("#firstName");
+        var lastName = document.querySelector("#lastName");
+        var biography = document.querySelector("#biography");
+        var role = document.querySelector("#role");
+        var createPassword = document.querySelector("#createPassword");
+        var userSettings = document.querySelector("#userSettings");
+        var createAccount = document.querySelector("#createAccount");
+        var saveChanges = document.querySelector("#saveChanges");
+        var savedBanner = document.querySelector("#savedBanner");
+        var hiddenSidebar = document.querySelector("#hiddenSidebar");
+
+        var deleteMenu = document.querySelector("#popup");
+        var TEST = document.querySelector("#TEST");
+
+        // Function to upload banner image
+    async function uploadBannerImage(file, username) {
+        const storageRef = ref(storage , `users/${username}/profile_images/${file.name}`);
+        const uploadTask = uploadBytesResumable(storageRef, file);
+
+        uploadTask.on('state_changed', 
+            (snapshot) => {
+                console.log("Adding file to database");
+            }, 
+            (error) => {
+                console.log("File could not be addefd to database: " +error);
+            }, 
+            () => {
+                getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                    document.querySelector("#linkToCustomImage").value = downloadURL;
+                })
+            });
+        }
+        var menu = false;
+
+        function menuOptions() {
+            if(menu) {
+                deleteMenu.style.display = "flex";
+                menu = true;
+            } else {
+                deleteMenu.style.display = "none";
+                menu = false;
+            }
+            return menu;
+        }
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                console.log(email.value);
+                    var getUserData = await getDoc(doc(db, "Users", email.value));
+                    var userData = await getUserData.data();
+                    profileName.innerHTML = `${userData.lastName}, ${userData.firstName} <i>@${userData.username}</i>`;
+                    profileRole.textContent = `${userData.role}`;
+                    profileImage.style.backgroundImage = `url(\"${userData.linkToCustomImage}\")`;
+                    profilePicture.src = `${userData.linkToCustomProfileImage}`; // Set profile picture
+                    hiddenSidebar.style.display = "flex";
+                    userSettings.innerHTML =
+                        `
+                        <h3 style="margin: 0;">About me</h3>
+                        <p id="profileBiography">${userData.biography}</p><br><br>
+
+                        <h3>Change your personal information</h3><br>
+                        <h5>Username (Cannot be changed)</h5>
+                        <input disabled type="text" name="" value="@${userData.username}" id="username" placeholder="Username"><br><br>
+                        <h5>Email (Cannot be changed)</h5>
+                        <input disabled type="text" name="" value="${userData.email}" id="username" placeholder="Username"><br><br>
+                        <h5>First name</h5>
+                        <input type="text" name="" class="testtwo" id="changeFirstName" value="${userData.firstName}" placeholder="First name"><br><br>
+                        <h5>Last name</h5>
+                        <input type="text" name="" class="testtwo" id="changeLastName" value="${userData.lastName}" placeholder="Last name"><br><br>
+                        <h5>Biography</h5>
+                        <textarea id="changeBiography">${userData.biography}</textarea><br><br>
+                        <button id="saveChanges">Save changes</button>
+                    `;
+                const uid = user.uid;
+                // ...
+            } else {
+                removeData();
+            }
+            });
+        async function uploadProfileImage(file, email) {
+            const storageRef = ref(storage , `users/${email}/profile_images/${file.name}`);
+            const uploadTask = uploadBytesResumable(storageRef, file);
+
+            uploadTask.on('state_changed', 
+                (snapshot) => {
+                    console.log("Adding file to database");
+                }, 
+                (error) => {
+                    console.log("File could not be added to database: " +error);
+                }, 
+                () => {
+                    getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                        document.querySelector("#linkToCustomProfileImage").value = downloadURL;
+                    })
+                });
+        }
+
+
+        async function registerUser() {
+            createUserWithEmailAndPassword(auth, email, password)
+                .then( async (userCredential) => {
+                    const username = document.querySelector("#username").value;
+                    const user = userCredential.user;
+                    const fileBanner = document.querySelector("#linkToCustomImage").files[0];
+                    const fileProfile = document.querySelector("#linkToCustomProfileImage").files[0];
+                    await uploadBannerImage(fileBanner, username);
+                    await uploadProfileImage(fileProfile, username);
+                })
+                .catch((error) => {
+                    console.error("Error creating user " + error);
+            });
+
+            
+        
+        }
+
+        login.addEventListener('click', async() => {
+            signInWithEmailAndPassword(auth, email.value, password.value)
+                .then( async (userCredential) => {
+                    console.log(email.value);
+                    var getUserData = await getDoc(doc(db, "Users", email.value));
+                    var userData = await getUserData.data();
+                    profileName.innerHTML = `${userData.lastName}, ${userData.firstName} <i>@${userData.username}</i>`;
+                    profileRole.textContent = `${userData.role}`;
+                    profileImage.style.backgroundImage = `url(\"${userData.linkToCustomImage}\")`;
+                    profilePicture.src = `${userData.linkToCustomProfileImage}`; // Set profile picture
+                    hiddenSidebar.style.display = "flex";
+                    userSettings.innerHTML =
+                        `
+                        <h3 style="margin: 0;">About me</h3>
+                        <p id="profileBiography">${userData.biography}</p><br><br>
+
+                        <h3>Change your personal information</h3><br>
+                        <h5>Username (Cannot be changed)</h5>
+                        <input disabled type="text" name="" value="@${userData.username}" id="username" placeholder="Username"><br><br>
+                        <h5>Email (Cannot be changed)</h5>
+                        <input disabled type="text" name="" value="${userData.email}" id="username" placeholder="Username"><br><br>
+                        <h5>First name</h5>
+                        <input type="text" name="" class="testtwo" id="changeFirstName" value="${userData.firstName}" placeholder="First name"><br><br>
+                        <h5>Last name</h5>
+                        <input type="text" name="" class="testtwo" id="changeLastName" value="${userData.lastName}" placeholder="Last name"><br><br>
+                        <h5>Biography</h5>
+                        <textarea id="changeBiography">${userData.biography}</textarea><br><br>
+                        <button id="saveChanges">Save changes</button>
+                    `;
+                })
+                .catch((error) => {
+                    console.error("Error logging in " + error);
+                    removeData();
+            });
+        });
+
+        deleteAccount.addEventListener('click', async () => {
+            try {
+                await deleteDoc(doc(db, "Users", email.value));
+                alert("Account deleted");
+                removeData();
+            } catch (error) {
+                alert("Could not delete account" + error)
+            }
+        });
+        document.addEventListener("click", async function(e){
+            const target = e.target.closest("#saveChanges");
+
+            if (target)  {
+                var getUserData = await getDoc(doc(db, "Users", email.value)) 
+                var data = getUserData.data();
+                console.log("Saving changes...")
+                try {
+                    var changeFirstName = await document.querySelector("#changeFirstName");
+                    var changeLastName = await document.querySelector("#changeLastName");
+                    var changeBiography = await document.querySelector("#changeBiography");
+                    updateDoc(doc(db, "Users", data.email), {
+                        firstName: changeFirstName.value,
+                        lastName: changeLastName.value,
+                        biography: changeBiography.value
+                    })
+                    console.log("Changes has been saved");
+                    savedBanner.style.display = "block";
+                    setTimeout(() => {
+                        savedBanner.style.display = "none";
+                    }, 2000);
+                } catch (error) {
+                    console.log("Failed to save changes: "+error);
+                }
+            }   
+        });
+        function removeData() {
+            profilePicture.src = "";
+            profileImage.style.backgroundImage = "url(\"\")";
+            profileName.textContent = "Username";
+            profileRole.textContent = "Role";
+            userSettings.innerHTML = "Not logged in.";
+        }
+        createAccount.addEventListener('click', async () => {
+            console.log("Clicked")
+            createUserWithEmailAndPassword(auth, createEmail.value, createPassword.value)
+                .then( async (userCredential) => {
+                    const linkToCustomProfileImageFile = document.querySelector("#linkToCustomProfileImage").files[0];
+                    const linkToCustomImageFile = document.querySelector("#linkToCustomImage").files[0];
+                    const username = document.querySelector("#username").value;
+                    const firstName = document.querySelector("#firstName").value;
+                    const lastName = document.querySelector("#lastName").value;
+                    const biography = document.querySelector("#biography").value;
+                    const role = document.querySelector("#role").value;
+                    const user = userCredential.user;
+                    const fileBanner = document.querySelector("#linkToCustomImage").files[0];
+                    const fileProfile = document.querySelector("#linkToCustomProfileImage").files[0];
+                    await uploadBannerImage(fileBanner, username);
+                    await uploadProfileImage(fileProfile, username);
+
+
+
+                    const profileImageRef = ref(storage, `users/${createEmail.value}/profile_images/${linkToCustomProfileImageFile.name}`);
+                    await uploadBytes(profileImageRef, linkToCustomProfileImageFile);
+                    const profileImageUrl = await getDownloadURL(profileImageRef);
+
+                    // Upload banner image
+                    const bannerImageRef = ref(storage, `users/${createEmail.value}/banners/${linkToCustomImageFile.name}`);
+                    await uploadBytes(bannerImageRef, linkToCustomImageFile);
+                    const bannerImageUrl = await getDownloadURL(bannerImageRef);
+
+                    // Create user document in Firestore
+                    await setDoc(doc(db, "Users", createEmail.value), {
+                        linkToCustomProfileImage: profileImageUrl,
+                        linkToCustomImage: bannerImageUrl,
+                        username: username,
+                        email: createEmail.value,
+                        firstName: firstName,
+                        lastName: lastName,
+                        biography: biography,
+                        role: role,
+                    });
+                })
+                .catch((error) => {
+                    console.error("Error creating user " + error);
+            });
+        });
+
+
+        
+        profilePicture.addEventListener('click', ()=> {
+            checkProfilePicture();
+        })
+
+        function checkProfilePicture() {
+            if(profilePicture.src == "") {
+                alert("Profile picture clicked");
+
+            } else {
+               alert("This profile picture is not changeable. Are you logged in?");
+            }
+        }
+
+        
+    </script>
+</body>
+</html>

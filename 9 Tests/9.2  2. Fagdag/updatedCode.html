@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style> 
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            padding: 20px;
+        }
+        main {
+            display: grid;
+            grid-template-columns: repeat(4,1fr);
+            gap: 20px;
+        }
+        div.item {
+            background-color: #f4f4f4;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.158);
+            border-radius: 5px;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <p>
+        Logg inn:
+        <input type="text" id="loggInn" placeholder="Brukernavn">
+        <button id="loggInnS">Logg Inn</button>
+    </p>
+    <main>
+        <div class="item">
+            <h3>Opprett bruker</h3>
+            <input type="text" name="" id="fornavn" placeholder="Fornavn">
+            <input type="text" name="" id="etternavn" placeholder="Etternavn">
+            <input type="text" name="" id="brukernavn" placeholder="Brukernavn">
+            <input type="text" name="" id="epostAdresse" placeholder="Epost adresse">
+            <input type="text" name="" id="postAdresse" placeholder="Post adresse">
+            <input type="text" name="" id="postKode" placeholder="Post kode">
+            <select name="" id="rolle">+
+                <option value="Admin">Admin</option>
+                <option value="IT Medarbeider">IT Medarbeider</option>
+                <option value="Lærer">Lærer</option>
+                <option value="Student">Student</option>
+                <option value="Student">Gjest</option>
+            </select>
+            <input type="text" name="" id="datamaskinMerke" placeholder="Datamaskin merke">
+            <input type="text" name="" id="datamaskinModell" placeholder="Datamaskin modell">
+            <button id="opprettBruker">Opprett bruker</button>
+        </div>
+        <div class="item">
+            <h3>Oppdater bruker</h3>
+            <input type="text" name="" id="oppdaterBrukernavn" placeholder="Skriv inn brukernavn til brukeren du ønsker å endre">
+            <br><br>
+            <input type="text" name="" id="oppdaterFornavn" placeholder="Fornavn">
+            <input type="text" name="" id="oppdaterEtternavn" placeholder="Etternavn">
+            <input type="text" name="" id="oppdaterEpostAdresse" placeholder="Epost adresse">
+            <input type="text" name="" id="oppdaterPostAdresse" placeholder="Post adresse">
+            <input type="text" name="" id="oppdaterPostKode" placeholder="Post kode">
+            <select name="" id="oppdaterRolle">
+                <option value="Admin">Admin</option>
+                <option value="IT Medarbeider">IT Medarbeider</option>
+                <option value="Lærer">Lærer</option>
+                <option value="Student">Student</option>
+                <option value="Student">Gjest</option>
+            </select>
+            <input type="text" name="" id="oppdaterDatamaskinMerke" placeholder="Datamaskin merke">
+            <input type="text" name="" id="oppdaterDatamaskinModell" placeholder="Datamaskin modell">
+            <button id="oppdaterBruker">Oppdater bruker</button>
+        </div>
+        <div class="item">
+            <h3>Finn bruker</h3>
+            <input type="text" name="" id="finnBruker" placeholder="Skriv inn brukernavn">
+            <div id="informasjon">
+    
+            </div>
+        </div>
+        <div class="item">
+            <h3>Slett bruker</h3>
+            <input type="text" name="" id="slettBruker" placeholder="Skriv inn brukernavn til brukeren du ønsker å slette">
+            <button id="bekreftSlettBruker">Slett bruker</button>
+        </div>
+    </main>
+    <script type="module">
+        import {
+            initializeApp
+        }
+        from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+
+        import {
+            getFirestore,
+            addDoc,
+            collection,
+            doc,
+            setDoc,
+            getDoc,
+            getDocs,
+            deleteDoc,
+            updateDoc
+        }
+        from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        // Firebase configuration
+        const firebaseConfig = {
+                 /*We don't do this shit around here*/
+        };
+        // Initialise firebase and its config
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore();
+
+
+        var fornavn = document.querySelector("#fornavn");
+        var etternavn = document.querySelector("#etternavn");
+        var brukernavn = document.querySelector("#brukernavn");
+        var epostAdresse = document.querySelector("#epostAdresse");
+        var postAdresse = document.querySelector("#postAdresse");
+        var postKode = document.querySelector("#postKode");
+        var rolle = document.querySelector("#rolle");
+        var datamaskinMerke = document.querySelector("#datamaskinMerke");
+        var datamaskinModell = document.querySelector("#datamaskinModell");
+
+        var opprettBruker = document.querySelector("#opprettBruker");
+
+        var oppdaterBrukernavn = document.querySelector("#oppdaterBrukernavn");
+        var oppdaterFornavn = document.querySelector("#oppdaterFornavn");
+        var oppdaterEtternavn = document.querySelector("#oppdaterEtternavn");
+        var oppdaterBrukernavn = document.querySelector("#oppdaterBrukernavn");
+        var oppdaterEpostAdresse = document.querySelector("#oppdaterEpostAdresse");
+        var oppdaterPostAdresse = document.querySelector("#oppdaterPostAdresse");
+        var oppdaterPostKode = document.querySelector("#oppdaterPostKode");
+        var oppdaterRolle = document.querySelector("#oppdaterRolle");
+
+        var oppdaterBruker = document.querySelector("#oppdaterBruker");
+
+        var finnBruker = document.querySelector("#finnBruker");
+        var informasjon = document.querySelector("#informasjon");
+
+        var slettBruker = document.querySelector("#slettBruker");
+        var bekreftSlettBruker = document.querySelector("#bekreftSlettBruker");
+
+        var innloggetRolle;
+        var loggInn = document.querySelector("#loggInn");
+        var loggInnS = document.querySelector("#loggInnS");
+
+        loggInnS.addEventListener('click', async () => {
+            var getData = await getDoc(doc(db, "Brukere", loggInn.value));
+            if(getData.exists()) {
+                innloggetRolle = getData.data().rolle;
+                alert("innlogget som" + innloggetRolle);
+                return innloggetRolle;
+            } else {
+                console.log(data);
+            }
+        });
+        
+        opprettBruker.addEventListener('click', async () => {
+            var getData = await getDoc(doc(db, "Brukere", brukernavn.value));
+            var data = getData.data();
+            if (data) {
+                alert("Brukernavnet finnes allerede, vennligst bruk et annet.");
+            } else {
+                console.log(innloggetRolle);
+                if (innloggetRolle != "Admin") {
+                    alert("Du har ikke tilgang til å opprette en bruker. Du må være en Admin (Logg inn med brukernavn: 001)")
+                } else {
+                    try {
+                        await setDoc(doc(db, "Brukere", brukernavn.value), {
+                            fornavn: fornavn.value,
+                            etternavn: etternavn.value,
+                            brukernavn: brukernavn.value,
+                            epostAdresse: epostAdresse.value,
+                            postAdresse: postAdresse.value,
+                            postKode: postKode.value,
+                            rolle: rolle.value,
+                            datamaskinMerke: datamaskinMerke.value,
+                            datamaskinModell: datamaskinModell.value,
+                        });
+                        console.log("User created!");
+                    } catch (error) {
+                        console.log("Error creating user: " + error);
+                    }
+                }
+            } 
+        });
+
+        oppdaterBrukernavn.addEventListener('input', async () => {
+            var getData = await getDoc(doc(db, "Brukere", oppdaterBrukernavn.value))
+            var data = getData.data();
+
+            if (data) {
+                if (data.brukernavn == oppdaterBrukernavn.value) {
+                    oppdaterFornavn.value = data.fornavn;
+                    oppdaterEtternavn.value = data.etternavn;
+                    oppdaterEpostAdresse.value = data.epostAdresse;
+                    oppdaterPostAdresse.value = data.postAdresse;
+                    oppdaterPostKode.value = data.postKode;
+                    oppdaterRolle.value = data.rolle;
+
+                    oppdaterDatamaskinMerke.value = data.datamaskinMerke;
+                    oppdaterDatamaskinModell = data.datamaskinModell;
+                }
+            } else {
+                console.log("User not found; Waiting for input.");
+            }
+        });
+
+        oppdaterBruker.addEventListener('click', async () => {
+            var getData = await getDoc(doc(db, "Brukere", oppdaterBrukernavn.value))
+            var data = getData.data();
+            
+            if (data) {
+                try {
+                    await updateDoc(doc(db, "Brukere", data.brukernavn), {
+                        fornavn: oppdaterFornavn.value,
+                        etternavn: oppdaterEtternavn.value,
+                        epostAdresse: oppdaterEpostAdresse.value,
+                        postAdresse: oppdaterPostAdresse.value,
+                        postKode: oppdaterPostKode.value,
+                        rolle: oppdaterRolle.value,
+                        datamaskinMerke: oppdaterDatamaskinMerke,
+                        datamaskinModell: oppdaterDatamaskinModell
+                    });
+                } catch (error) {
+                    console.log("Kunne ikke oppdatere bruker: " + error);
+                }
+            }
+        });
+
+        finnBruker.addEventListener('input', async () => {
+            var getData = await getDoc(doc(db, "Brukere", finnBruker.value))
+            var data = getData.data();
+
+            if (getData.exists()) {
+                try {
+                    informasjon.innerHTML =
+                        `
+                                <h2>Informasjon for bruker ${data.brukernavn}</h2>
+                                <p>
+                                    Fornavn: ${data.fornavn}<br>
+                                    Etternavn: ${data.etternavn}<br>
+                                    Rolle: ${data.rolle}
+                                </p>
+                            `
+                    if (innloggetRolle == "Admin" || innloggetRolle == "IT Medarbeider") {
+                        try {
+                            informasjon.innerHTML +=
+                                `   
+                                        <h5>Kun Admin og IT Medarbeider</h5>
+                                        <p>
+                                            Epost adresse: ${data.epostAdresse}<br>
+                                            Post adresse: ${data.postAdresse}, Postkode: ${data.postKode}<br>
+                                            <h5>Brukerens maskin</h5>
+                                            Merke: ${data.datamaskinMerke}<br>
+                                            Modell: ${data.datamaskinModell}
+                                        </p>
+                                    `
+                        } catch (error) {
+                            console.log("Kunne ikke finne brukerinformasjon: " + error);
+                        }
+                    }
+                } catch (error) {
+                    console.log("Kunne ikke finne brukerinformasjon: " + error);
+                }
+            } else {
+                console.log("Bruker eksisterer ikke");
+            }
+        });
+    </script>
+</body>
+</html>

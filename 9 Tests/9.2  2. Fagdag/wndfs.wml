@@ -1,0 +1,23 @@
+
+<?xml version="1.0"?> 
+    <!DOCTYPE wml PUBLIC "-//WAPFORUM//DTD WML 1.2//EN" 
+"-//WAPFORUM//DTD WML 1.1//EN" "http://www.wapforum.org/DTD/wml_1.1.xml"> 
+  
+    <wml> 
+        
+        <!-- This is first card-->
+        <card id="one" title="First Card"> 
+            <h1> Geeksforgeeks </h1> 
+            <p> 
+                A Computer Science Portal for Geeks 
+            </p> 
+        </card> 
+         
+        <!-- This is second card-->
+        <card id="two" title="Second Card"> 
+            <p> 
+                This is created by WML 
+            </p> 
+        </card> 
+  
+    </wml> 

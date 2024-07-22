@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        #block {
+            display: none;
+        }
+        #signedIn {
+            display: none;
+        }
+        #asl{
+            z-index: -1;    
+            position: fixed;
+            top: 0;left:0;bottom:0;right:0;
+            width: 100dvw;
+            height: 100dvh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            scale: 1.5;
+            color: rgb(250, 250, 250);
+            user-select: none;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <div id="signedOut">
+            <div>
+                <label for="email">Email: </label>
+                <input type="text" name="email" id="email"><br>
+                <label for="password">Password: </label>
+                <input type="password" name="password" id="password">
+            </div>
+            <button id="login">Login</button>
+            <button id="register">Register</button>
+        </div>
+        <div id="signedIn">
+            <p id="loggedInEmail"></p>
+            <button id="logout">Log out</button>
+        </div>
+    </div>
+
+    <div id="block">
+       <!-- Content here will appear when an user is logged in -->
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+        import { getAuth, signOut , createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+        const firebaseConfig = {
+            apiKey: "du tror det ja",
+            authDomain: "nej",
+            projectId: "nej",
+            storageBucket: "nej",
+            messagingSenderId: "nej",
+            appId: "nej"
+        }
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        var login = document.querySelector("#login");
+        var register = document.querySelector("#register");
+        var logout = document.querySelector("#logout");
+
+        var signedIn = document.querySelector("#signedIn");
+        var signedOut = document.querySelector("#signedOut");
+
+        var block = document.querySelector("#block");
+        var loggedInEmail = document.querySelector("#loggedInEmail");
+
+        var email = document.querySelector("#email");   
+        var password = document.querySelector("#password");
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                const uid = user.uid;
+                signedOut.style.display = "none";
+                signedIn.style.display = "flex";
+                block.style.display = "flex";
+                loggedInEmail.textContent = user.email;
+                console.log("Logged in");
+            } else {
+                signedOut.style.display = "flex";
+                signedIn.style.display = "none";
+                block.style.display = "none";
+                loggedInEmail.textContent = "";
+                console.log("Not logged in");
+            }
+        });
+
+        login.addEventListener('click', () => {
+            signInWithEmailAndPassword(auth, email.value, password.value) 
+            .then((userCredential) => {
+                const user = userCredential.user;
+            })
+            .catch((error) => {
+                console.log(error);
+            }) 
+        });
+        logout.addEventListener('click', () => {
+            signOut(auth)
+        })
+        register.addEventListener('click', () => {
+            createUserWithEmailAndPassword(auth, email.value, password.value)
+            .then((userCredential) => {
+                const user = userCredential.user;
+                signedOut.style.display = "none";
+                signedIn.style.display = "block";
+                block.style.display = "block";
+            }).catch((error) => {
+               console.log(error);
+            });
+        });
+    </script>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     <div id="asl"><H1>laget av benjamin</H1></div>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+</body>
+</html>
