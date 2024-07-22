@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        body {
+            font-family: "Plus Jakarta Sans";
+            background-color: aliceblue;
+        }
+        main {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        main section {
+            padding: 20px;
+
+        }
+        .items {
+            display: grid;
+            grid-template-columns: repeat(3,1fr);
+            gap: 20px;
+        }
+        @media only screen and (max-width: 800px) {
+            .items {
+                grid-template-columns: 1fr;
+            }
+        }
+        .item {
+            background-color: aliceblue;
+            border-radius: 10px; 
+            padding: 10px;
+            border: 2px solid black;
+            box-shadow: 10px 10px 0px black;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .enchantedItem {
+            color: black !important;
+            border-radius: 10px;
+            padding: 10px;
+            border: 2px solid purple;
+            box-shadow: 10px 10px 0px purple;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .item .buttons , .enchantedItem .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .item .buttons button, .enchantedItem .buttons button {
+            background-color: aliceblue;
+            border: 0;
+            width: 100%;
+            padding: 5px 20px 5px 20px;
+            border-radius: 100px;
+            border: 2px solid black;
+            cursor: pointer;
+            transition: .3s ease-in-out;
+            
+        }
+        .enchantedItem .buttons button {
+            border-color: purple !important;
+        }
+        .item .buttons button:hover {
+            background-color: white;
+            box-shadow: 2.5px 2.5px 0px black;
+        } 
+        .enchantedItem .buttons button:hover {
+            background-color: white;
+            box-shadow: 2.5px 2.5px 0px purple !important;
+        }
+        .enchantButton {
+            color: purple;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        ::-webkit-scrollbar {
+            width: 0;
+        }
+        header {
+            overflow: auto;
+            width: 100dvw;
+        }
+        #debugging {
+            overflow: auto;
+            color: black;
+            display: grid;
+            grid-template-columns: repeat(50, 2fr);
+            padding: 10px;
+            position: fixed;
+            bottom: 20px;
+            left: 0px;
+            right: 0;
+        }
+        #debugging p {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: black;
+            color: white;
+            border-radius: 100px;
+            padding: 5px;
+            margin-left: 20px;
+            margin-right: 20px;
+            width: 15rem;
+            padding: 5px 20px 5px 20px
+        }
+    </style>
+</head>
+<body>
+    <header id="debugging"></header>
+    <main>
+        
+        <section>
+            <h1>Your inventory (<span id="currentInventorySize">0</span>)</h1>
+            <div id="webInventory" class="items"></div>
+        </section>
+        <section>
+            <h1>The store (<span id="currentStoreSize">0</span>)</h1>
+            <div id="webStore" class="items"></div>
+        </section>
+    </main>
+
+
+    <script>
+        var debugging = document.querySelector("#debugging");
+
+        var displayCurrentInventorySize = document.querySelector("#currentInventorySize");
+        var displayCurrentStoreSize = document.querySelector("#currentStoreSize");
+
+        var webInventory = document.querySelector("#webInventory");
+        var webStore = document.querySelector("#webStore");
+
+        // Game configuration
+        var userBalance = 200;
+        var userRank = Infinity;
+        var userExperience = Infinity;
+
+        const priceLoss = 0.30;
+
+        
+
+
+
+
+
+
+
+        const maxInventory = 10;
+        const oreMaxInventoryStack = 128;
+        const toolMaxInventoryStack = 32;
+        const consumableMaxInventoryStack = 64;
+
+
+        const enchantments = [
+            // Basic enchantments
+            { enchantment: "Unbreaking", price: 4000, level: 4, enchantmentDescription: "Lowers the damage taken on your tool on each use", requiredRank: 2},
+        ]
+
+        const accessories = [
+            // Basic accessories
+            { type: "Helmet", protection: 10, enchanted: false, enchantmentType: "Not enchanted", accessoryDescription: "Protects your head from falling objects", }
+        
+        ]
+        const inventory = [
+            // Tools
+            {name: "Makeshift Fishing Rod", price: 0, quantity: 12, enchanted: true, enchantmentLevel: 2, enchantmentType: "Unbreaking", itemType: "Tool", itemDescription: "Default - Does not have any use or value.", toolPower: 1, toolDurability: 2},
+            {name: "Makeshift Apple tree", price: 0, quantity: 12, enchanted: false, enchantmentLevel: 0, enchantmentType: "Not enchanted", itemType: "Tool", itemDescription: "Default - Does not have any use or value.", toolPower: 1, toolDurability: 2},
+            // Consumables
+            {name: "Mystery Mushroom", price: 0, quantity: 8, itemType: "Consumable", itemDescription: "Default - Does not have any use or value.", boostType: "Random", boostDuration: 3, boostPower: 4},
+        ];
+
+        const store = [
+            // Tools
+            {name: "Rusty Pickaxe", price: 20, enchanted: false, enchantmentType: "Not enchanted", enchantmentLevel: 0, stock: 10, itemType: "Tool", itemDescription: "Rusty Pickaxe", toolPower: 3, toolDurability:5},
+            {name: "Forager Shovel", price: 60, enchanted: false, enchantmentType: "Not enchanted", enchantmentLevel: 0, stock: 5, itemType: "Tool", itemDescription: "Forager Shovel", toolPower: 4, toolDurability:8},
+            {name: "Makeshift Fishing Rod", price: 40, enchanted: false, enchantmentType: "Not enchanted", enchantmentLevel: 0, stock: 12, itemType: "Tool", itemDescription: "Makeshift Fishing Rod", toolPower: 2, toolDurability:4},
+            {name: "test", price: 0, stock: 4, enchanted: false, enchantmentType: "Not enchanted", enchantmentLevel: 0, itemType: "Tool", itemDescription: "test",toolPower: 0, toolDurability: 0},
+
+            // Consumables
+            {name: "Trail Rations", price: 15, stock: 30, itemType: "Consumable", itemDescription: "A simple blend of dried fruit and nuts. Restores a bit of energy.", boostType: "Energy", boostDuration: 20, boostPower: 3},
+            {name: "Mystery Mushroom", price: 45, stock: 8, itemType: "Consumable", itemDescription: "Glows slightly. Eating this could be a good idea...or a terrible one.", boostType: "Random", boostDuration: 30, boostPower: 5} 
+        ];
+
+
+
+        function displayStore() {
+            webStore.innerHTML = ``
+
+            let totalStoreStock = 0;
+            store.forEach((object) => {
+                totalStoreStock += object.stock;
+                displayCurrentStoreSize.textContent = `x${store.length}/${totalStoreStock}`
+            });
+            store.forEach(({name, price, stock, itemType, itemDescription, boostType, boostPower, boostDuration, toolDurability, toolPower}) => {
+                if(stock == 0) {
+
+                } else {
+                    webStore.innerHTML += 
+                    `
+                        <div class="item">
+                            <div>
+                                <h3>${name} (x<span>${stock}</span>)</h3>
+                                <p>${itemType}</p><br>
+                                <p>
+                                    <b>About this product:</b><br>
+                                    ${itemDescription}
+                                </p>
+                            </div>
+                            <br><br>
+                            <div class="buttons">
+                                <button onclick="buyItem(\'${name}\', ${price}, \'${itemType}\', \'${itemDescription}\', \'${boostType}\', ${boostDuration}, ${boostPower}, ${toolDurability}, ${toolPower}, ${stock})">Buy for $ ${price}</button>
+                            </div>
+                        </div>
+                    `
+                }
+                
+            });
+        };      
+
+        function displayInventory() {
+            webInventory.innerHTML = ``;
+            let totalInventoryQuantity = 0;
+            inventory.forEach((object) => {
+                totalInventoryQuantity += object.quantity;
+                displayCurrentInventorySize.textContent = `x${inventory.length}/${totalInventoryQuantity }`
+            });
+            inventory.forEach(({name, price, quantity, itemType, itemDescription, boostType, boostPower, boostDuration, toolDurability, toolPower, enchantmentType, enchantmentDescription, enchanted, enchantmentLevel}, index) => {
+                switch (itemType) {
+                    case "Tool":
+                    switch (enchanted) {
+                        case true:
+                            webInventory.innerHTML += 
+                            `
+                                <div class="enchantedItem">
+                                    <div>
+                                        <h3>${name} (x<span>${quantity}</span>)</h3>
+                                        <p>${itemType}</p> <br>
+                                        <p>
+                                            <b>About this product:</b><br>
+                                            ${itemDescription}
+                                        </p><br><br>
+                                        <p>
+                                            <b>Enchantment: </b>${enchantmentType}
+                                            <b>Power: </b>${toolPower*(enchantmentLevel / 0.5)}<br>
+                                            <b>Durability: </b>${toolDurability*(enchantmentLevel / 0.5)}
+                                        </p>
+                                    </div>
+                                    <br><br>
+                                    <div class="buttons">
+                                        <button onclick="sellItem(${index}, \'${name}\', ${quantity}, ${price})">Sell for $ ${price}</button>
+                                        <button>Use</button>
+                                    </div>
+                                </div>
+                            `
+                            break;
+                        case false:
+                            webInventory.innerHTML += 
+                            `
+                                <div class="item">
+                                    <div>
+                                        <h3>${name} (x<span>${quantity}</span>)</h3>
+                                        <p>${itemType} | <a class="enchantButton">Enchant this item</a></p> <br>
+                                        <p>
+                                            <b>About this product:</b><br>
+                                            ${itemDescription}
+                                        </p><br><br>
+                                        <p>
+                                            <b>Enchantment: </b>Enchant this item to unlock a more powerful tool<br>
+                                            <b>Power: </b>${toolPower}<br>
+                                            <b>Durability: </b>${toolDurability}
+                                        </p>
+                                    </div>
+                                    <br><br>
+                                    <div class="buttons">
+                                        <button onclick="sellItem(${index}, \'${name}\', ${quantity}, ${price})">Sell for $ ${price}</button>
+                                        <button>Use</button>
+                                    </div>
+                                </div>
+                            `
+                        break;
+                    
+                    default:
+                        console.log("shit");
+                        break;
+                    }
+                        break;
+                    case "Consumable":
+                            webInventory.innerHTML += 
+                            `
+                                <div class="item">
+                                    <div>
+                                        <h3>${name} (x<span>${quantity}</span>)</h3>
+                                        <p>${itemType}</p><br>
+                                        <p>
+                                            <b>About this product:</b><br>
+                                            ${itemDescription}<br><br>
+                                            <b>Boosts: </b>${boostType}<br>
+                                            <b>Duration: </b>${boostDuration}<br>
+                                            <b>Power: </b>${boostPower}
+                                        </p>
+                                    </div>
+                                    <br><br>
+                                    <div class="buttons">
+                                        <button onclick="sellItem(${index}, \'${name}\', ${quantity}, ${price})">Sell for $ ${price}</button>
+                                        <button>Consume</button>
+                                    </div>
+                                </div>
+                            `
+                        break;
+                    default:
+                        console.log(`Unspecified inventory item found ${name} with type ${itemType}`);
+                        break;
+                }
+            });
+        };
+
+        function buyItem(name, price, itemType, itemDescription, boostType, boostDuration, boostPower, toolDurability, toolPower, stock, enchantmentDescription, enchantmentLevel, enchanted, enchantmentType) {
+            let existingItem = inventory.find(item => item.name == name);
+            let storeItem = store.find(item => item.name == name);
+            try {
+                switch (itemType) {
+                    case "Tool":
+                        if(userBalance < price) {
+                            console.log("Insufficent balance");
+                        } else {
+                            if(existingItem) {
+                                if(existingItem.quantity == toolMaxInventoryStack) {
+                                    console.log("Maximum quantity reached");
+                                } else {
+                                    existingItem.quantity += 1;
+                                }
+                            } else {
+                                inventory.push({
+                                    name: name, 
+                                    price: (Math.floor(price*priceLoss)), 
+                                    quantity: 1, 
+                                    itemType: itemType, 
+                                    itemDescription: itemDescription, 
+                                    toolDurability: toolDurability, 
+                                    toolPower: toolPower,
+                                    enchanted: false,
+                                    enchantmentLevel: 0,
+                                    enchantmentDescription: "Not enchanted"
+                                });
+                            }
+                            userBalance -= price;
+                            storeItem.stock -= 1;
+                        }
+                        break;
+                    case "Consumable":
+                        if(userBalance < price) {
+                            console.log("Insufficent balance");
+                        } else {
+                            if(existingItem) {
+                                if(existingItem.quantity == consumableMaxInventoryStack) {
+                                    console.log("Maximum quantity reached");
+                                } else {
+                                    existingItem.quantity += 1;
+                                }
+                            } else {
+                                inventory.push({
+                                    name: name, 
+                                    price: (Math.floor(price*priceLoss)), 
+                                    itemType: itemType, 
+                                    quantity: 1, 
+                                    itemDescription: itemDescription, 
+                                    boostType: boostType, 
+                                    boostDuration: boostDuration, 
+                                    boostPower: boostPower
+                                });
+                            }
+                            userBalance -= price;
+                            storeItem.stock -= 1;
+                        }
+                        break;
+                    default:
+                        console.log("Could not buy");
+                        break;
+                }
+                updateAll();
+            } catch (error) {
+                console.log("Error buying item: " + error);
+            }
+        }
+        function sellItem(index, name, quantity, price) {
+            let getStore = store.find(item => item.name == name);
+            try {
+                if(getStore) {
+                    if(inventory[index].quantity > 1) {
+                        inventory[index].quantity -= 1;     
+                    } else {
+                        inventory.splice(index, 1);
+                    }
+                    userBalance += price;
+                    getStore.stock += 1;
+                } else {
+                    console.log("You really thought, eh?");
+                };
+            } catch (error) {
+                console.log("Error selling item: " + error);
+            }
+            displayAll();
+        }
+
+        function updateAll() {
+            displayAll();
+        }
+        function displayAll() {
+            displayInventory();
+            displayStore();
+        }
+
+        updateAll();
+
+
+
+
+        setInterval(() => {
+            debugging.innerHTML = 
+                `
+                <p><b>Balance: </b>&nbsp;${userBalance}</p>
+                <p><b>Experience: </b>&nbsp;${userExperience}</p>
+                <p><b>Rank: </b>&nbsp;${userRank}</p>
+                <p><b>Store Size: </b>&nbsp;${store.length}</p>
+                <p><b>Inv Size: </b>&nbsp;${inventory.length}/${maxInventory}/C${consumableMaxInventoryStack}/T${toolMaxInventoryStack}</p>
+                <br>
+                `;
+            inventory.forEach(({name,quantity}) => {
+                debugging.innerHTML += `<p><b>${name}</b>&nbsp; (${quantity})</p><br>`;
+            });
+            debugging.innerHTML += `<br>`
+            store.forEach(({name,stock}) => {
+                debugging.innerHTML += `<p><b>${name}</b>&nbsp; (${stock})</p><br>`;
+            });
+            
+        }, 1000);
+    </script>
+</body>
+
+</html>

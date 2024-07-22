@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial;
+            background-color: aliceblue;
+        }
+
+        header {
+            display: flex;
+            position: fixed;
+            bottom: 20px;
+            right: 10px;
+            left: 10px;
+            border-radius: 10px;
+            padding: 10px 45px 10px 45px;
+            border: 2px solid black;
+           background-color: #d4e3f3;
+            backdrop-filter: blur(10px);
+            justify-content: space-between;
+            gap: 50px;
+            color: black;
+            font-weight: bolder;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.53);
+        }
+
+        #gameWarning {
+            display: flex;
+            flex-direction: row;
+            position: fixed;
+            bottom: 90px;
+            font-weight: bolder;
+            opacity: 0;
+            width: 30rem;
+            border-radius: 5px;
+            transition: .5s ease-in-out;
+            left: 10px;
+            background-color: #d4e3f3;
+            text-align: center;
+            color: black;
+            padding: 10px;
+            padding: 10px 25px 10px 25px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.53);
+        }
+
+        header div {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .headerSecondary {
+            color: black;
+            font-size: 0.8rem;
+            font-weight: lighter;
+        }
+
+        main {
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        main section {
+            padding: 10px;
+        }
+
+        main section h1 {
+            margin-bottom: 20px;
+        }
+
+        button:disabled {
+            color: black;
+            border: 1px solid #fff;
+            border-radius: 3px;
+            background-color: #f4f4f4;
+        }
+
+        h3 {
+            display: flex;
+            align-items: center;
+            font-weight: bolder;
+            justify-content: space-between;
+        }
+
+        #viewInventory,
+        #viewStore {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 10px;
+        }
+
+        .labelNotice {
+            font-weight: bolder;
+            color: black;
+            border: 2px solid black;
+            padding: 2.5px 15px 2.5px 15px;
+            border-radius: 5px;
+        }
+
+        #Item {
+            background-color: #d4e3f3e9;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border-radius: 5px;
+        }
+
+        #Item.outOfStock {
+            background-color: #f3d8d4e9;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        #Item h3 {
+            font-weight: bolder;
+            margin-bottom: 5px;
+        }
+
+        #Item button,
+        input,
+        .clickMe {
+            margin-top: 20px;
+            background-color: white;
+            border-radius: 1000px;
+            border: 2px solid rgb(255, 255, 255);
+            width: fit-content;
+            padding: 5px 20px 5px 20px;
+            cursor: pointer;
+        }
+
+        #Item button:hover {
+            background-color: aliceblue;
+        }
+
+        #Item button:disabled {
+            cursor: default;
+            width: 100%;
+            text-align: center;
+            align-items: center;
+            display: block;
+        }
+
+        #Item button:disabled:hover {
+            background-color: white;
+        }
+
+        button {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: bold;
+        }
+
+        svg {
+            height: 20px;
+            width: 20px;
+        }
+
+        input {
+            width: 4rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="gameWarning">
+        <span>Error: 69</span>
+    </div>
+    <header>
+        <div>
+            <p class="headerMain">Your balance: <span id="userBalance">FAILED TO LOAD</span></p>
+            <p class="headerSecondary">Multiplier: <span id="userMultiplier">FAILED TO LOAD</span></p>
+        </div>
+        <div>
+        </div>
+        <div>
+            <p class="headerMain">Your rank: <span id="userRank">FAILED TO LOAD</span><br></p>
+            <p class="headerSecondary">Experience: <span id="userExperience">FAILED TO LOAD</span> </p>
+        </div>
+    </header>
+    <main>
+        <section>
+            <h1>Inventory <span id="inventorySize" class="labelNotice">FAILED TO LOAD</span></h1>
+            <div id="viewInventory"></div>
+        </section>
+        <section>
+            <h1>Store <span id="storeSize" class="labelNotice">FAILED TO LOAD</span></h1>
+            <div id="viewStore"></div>
+        </section>
+    </main>
+    <script>
+        // Game Configuration
+        var balance = Infinity;
+        var multiplier = Infinity;
+        var experience = Infinity;
+        var rank = 1;
+        var experienceRANKUP = Math.floor(Math.random() * 213) + 231 * rank;
+        var maxInventory = Infinity;
+
+        var workingExperience = 0;
+        var workingRank = 0;
+        var maxBucket = Infinity;
+
+        var bucket = [
+            
+        ]
+        var fishes = [
+            { name: "Golden fish", sellPrice: Math.floor(100 + Math.random() * 100), rarity: 1, description: "1"},
+            { name: "Rainbow Trout", sellPrice: Math.floor(50 + Math.random() * 50), rarity: 5, description: "2"},
+            { name: "Blue Tang", sellPrice: Math.floor(70 + Math.random() * 50), rarity: 5, description: "3"},
+            { name: "Clownfish", sellPrice: Math.floor(30 + Math.random() * 40), rarity: 10, description: "4"},
+            { name: "Angelfish", sellPrice: Math.floor(40 + Math.random() * 60), rarity: 10, description: "5"},
+            { name: "Betta", sellPrice: Math.floor(20 + Math.random() * 30), rarity: 20, description: "6"},
+            { name: "Guppy", sellPrice: Math.floor(10 + Math.random() * 20), rarity: 20, description: "7"},
+            { name: "Catfish", sellPrice: Math.floor(60 + Math.random() * 40), rarity: 10, description: "8"},
+            { name: "Piranha", sellPrice: Math.floor(80 + Math.random() * 60), rarity: 5, description: "9"},
+            { name: "Swordfish", sellPrice: Math.floor(90 + Math.random() * 70), rarity: 3, description: "10"},
+            { name: "Tuna", sellPrice: Math.floor(120 + Math.random() * 80), rarity: 2, description: "11"},
+        ]
+
+        var storeItems = [
+            // Pickaxes
+            { name: "Rusty Pickaxe", price: 10, stock: 1, requiredRank: 1, type: "Tool", toolPower: 0.75, toolHealth: 50, toolDescription: "1" },
+            { name: "Stone Pickaxe", price: 20, stock: 6, requiredRank: 0, type: "Tool", toolPower: 1.25, toolHealth: 125, toolDescription: "1" },
+            { name: "Iron Pickaxe", price: 30, stock: 2, requiredRank: 10, type: "Tool", toolPower: 2, toolHealth: 500, toolDescription: "1" },
+            { name: "Diamond Pickaxe", price: 50, stock: 2, requiredRank: 40, type: "Tool", toolPower: 3, toolHealth: 5000, toolDescription: "1" },
+            { name: "Gold Pickaxe", price: 40, stock: 5, requiredRank: 20, type: "Tool", toolPower: 15, toolHealth: 25, toolDescription: "1" },
+            
+            // Axes
+            { name: "Rusty Axe", price: 15, stock: 1, requiredRank: 1, type: "Tool", toolPower: 0.75, toolHealth: 50, toolDescription: "1" },
+            { name: "Stone Axe", price: 25, stock: 2, requiredRank: 5, type: "Tool", toolPower: 1.25, toolHealth: 125, toolDescription: "1" },
+            { name: "Iron Axe", price: 35, stock: 2, requiredRank: 10, type: "Tool", toolPower: 2, toolHealth: 500, toolDescription: "1" },
+            { name: "Diamond Axe", price: 500, stock: 2, requiredRank: 40, type: "Tool", toolPower: 3, toolHealth: 5000, toolDescription: "1" },
+            { name: "Gold Axe", price: 450, stock: 5, requiredRank: 20, type: "Tool", toolPower: 15, toolHealth: 25, toolDescription: "1" },
+
+            // Consumables
+            { name: "Apple", price: 1, stock: 100, requiredRank: 1, type: "Consumable", boostType: "1", boostDuration: 0, boostAmount: 0, boostDescription: "1" },
+            { name: "Bread", price: 2, stock: 80, requiredRank: 1, type: "Consumable", boostType: "1", boostDuration: 0, boostAmount: 0, boostDescription: "1" },
+            { name: "Cooked Meat", price: 5, stock: 60, requiredRank: 5, type: "Consumable", boostType: "1", boostDuration: 0, boostAmount: 0, boostDescription: "1" },
+            { name: "Fish", price: 3, stock: 70, requiredRank: 5, type: "Consumable", boostType: "1", boostDuration: 0, boostAmount: 0, boostDescription: "1" },
+            { name: "Water Bottle", price: 1, stock: 150, requiredRank: 1, type: "Consumable", boostType: "1", boostDuration: 0, boostAmount: 0, boostDescription: "1" },
+            { name: "Energy Drink", price: 3, stock: 50, requiredRank: 20, type: "Consumable", boostType: "1", boostDuration: 0, boostAmount: 0, boostDescription: "1" },
+            { name: "Health Potion", price: 10, stock: 30, requiredRank: 10, type: "Consumable", boostType: "1", boostDuration: 0, boostAmount: 0, boostDescription: "1" },
+            { name: "Mana Potion", price: 10, stock: 30, requiredRank: 60, type: "Consumable", boostType: "1", boostDuration: 0, boostAmount: 0, boostDescription: "1" }
+        ];
+
+        var inventory = [
+            // Default Items
+            { name: "Wooden Pickaxe", price: 0, quantity: 1, stockIndex: -5, type: "Tool", toolPower: 0.25, toolHealth: 50, toolDescription: "This is your very first Pickaxe, use it carefully as it has a low durability." },
+
+            // Test items
+            { name: "Iron ore", price: 40, quantity: 1, stockIndex: -5, type: "Tool", toolPower: 0.25, toolHealth: 0, toolDescription: "This is a test product, it can not be used for anything." },
+
+
+            // Debugging items
+            { name: "Default Tool", price: 50, quantity: 30, stockIndex: -5, type: "Tool", toolPower: 1, toolHealth: 50, toolDescription: "This product is used for debugging", isDevOnly: true },
+            { name: "Default Consumable", price: 50, quantity: 30, stockIndex: -5, type: "Consumable", boostType: "Health", boostDuration: 50, boostAmount: 5, boostDescription: "This product is used for debugging", isDevOnly: true },
+            { name: "Default Unknown", price: 50, quantity: 30, stockIndex: -5, type: "iojdsgfiofiosdgfiojdsfio", boostType: "Health", boostDuration: 50, boostAmount: 5, boostDescription: "This product is used for debugging", isDevOnly: true }
+        ]
+
+        // Core Variables and Functions
+        var userBalance = document.querySelector("#userBalance");
+        var userMultiplier = document.querySelector("#userMultiplier");
+        var userRank = document.querySelector("#userRank");
+        var userExperience = document.querySelector("#userExperience");
+        var viewInventory = document.querySelector("#viewInventory");
+        var inventorySize = document.querySelector("#inventorySize");
+        var storeSize = document.querySelector("#storeSize");
+        var valueDecrease = 0.15;
+        var gameWarning = document.querySelector("#gameWarning");
+
+        function displayWarning() {
+            gameWarning.style.display = "block";
+            gameWarning.style.opacity = 1;
+            setTimeout(() => {
+                gameWarning.style.display = "none";
+            }, 5000);
+        }
+        function updateBalance() {
+            balance = balance;
+            userBalance.textContent = "$ " + balance;
+        }
+        function updateMultiplier() {
+            multiplier = multiplier;
+            userMultiplier.textContent = multiplier;
+        }
+        function updateExperience() {
+            experience = experience;
+            userExperience.textContent = `${experience} / ${experienceRANKUP}`;
+        }
+        function updateRank() {
+            rank = rank;
+            userRank.textContent = rank;
+            if (rank >= 100) {
+                userRank.style.textShadow = "0 0 10px gold";
+                userRank.style.color = "black";
+            }
+        }
+        function Validation() {
+            if (experience >= experienceRANKUP) {
+                rank = rank + 1;
+                experience = 0;
+                experienceRANKUP = Math.floor(Math.random() * 213) + 231 * rank;
+            }
+            updateAll();
+        }
+
+        // The Game
+        function displayInventory() {
+            inventorySize.innerHTML = inventory.length;
+            viewInventory.textContent = '';
+            inventory.forEach(({ name, price, quantity, stockIndex, type, boostAmount, boostDescription, boostDuration, boostType, toolDescription, toolHealth, toolPower }, index) => {
+                if (type == "Tool") {
+                    viewInventory.innerHTML +=
+                        `
+                            <div id="Item">
+                                <div>
+                                    <h3>${name}</h3>
+                                    <p>Quantity: ${quantity} | ${type}</p>
+                                </div><br>
+                                <div>
+                                    <p>
+                                        <b>About product: </b><br>${toolDescription}<br><br>
+                                        <b>Health: </b>${toolHealth}<br>
+                                        <b>Power: </b>${toolPower}<br>
+                                    </p>   
+                                </div>
+                                <button onclick="sellItem(${quantity}, ${Math.floor(price * valueDecrease)}, '${name}', ${index})">
+                                    Sell for $ ${Math.floor(price * valueDecrease)}
+                                </button>
+                            </div>
+                        `
+                } else if (type == "Consumable") {
+                    viewInventory.innerHTML +=
+                        `
+                            <div id="Item">
+                                <div>
+                                    <h3>${name}</h3>
+                                    <p>Quantity: ${quantity} | ${type}</p>
+                                </div><br>
+                                <div>
+                                    <p>
+                                        <b>About product: </b><br>${boostDescription} it boosts your ${boostType}<br><br>
+                                        <b>Duration: </b>${boostDuration} seconds<br>
+                                        <b>Amount: </b>${boostAmount}
+                                    </p>     
+                                </div>
+                                <div style="display:flex;align-items:center;justify-content:space-between; gap: 10px;">
+                                    <button onclick="sellItem(${quantity}, 0, '${name}', ${index})">
+                                        Delete
+                                    </button>
+                                    <button >
+                                        Consume     
+                                    </button>
+                                </div>
+                            </div>
+                        `
+                    // onclick="consumeItem(${quantity}, 0, '${name}', ${index})"
+                } else {
+                    viewInventory.innerHTML +=
+                        `
+                            <div id="Item">
+                                ${index}
+                                <br>
+                                The item ${name} has been hidden, this is because my code does not support its type (${type}). 
+                                <button onClick="sellItem(0, 0, '${name}', ${index})">Remove this item</button>
+                            </div>
+                        `
+                }
+
+            })
+        }
+        function removeItem(index) {
+            inventory.splice(index, 1);
+            updateAll();
+        }
+
+        function sellItem(quantity, value, name, index) {
+            value = Math.floor(value);
+            var itemInStore = storeItems.find(item => item.name === name);
+            var existingItemIndex = inventory.findIndex(item => item.name === name);
+            if (existingItemIndex != -1) {
+                if (inventory[existingItemIndex].quantity == 1) {
+                    inventory.splice(existingItemIndex, 1);
+                } else {
+                    inventory[existingItemIndex].quantity--;
+                }
+                if(itemInStore) {
+                    itemInStore.stock += 1;
+                }
+                balance = Number(balance) + Number(value);
+                updateAll();
+            } else {
+                console.log("item apparently does NOT exist")
+            }
+
+        }
+
+
+        function displayStore() {
+            viewStore.textContent = ``;
+            storeItems.forEach(({ name, price, stock, requiredRank, type, boostAmount, boostDescription, boostDuration, boostType, toolDescription, toolHealth, toolPower }, index) => {
+                if (stock == 0) {
+
+                    viewStore.innerHTML +=
+                        `
+                         [ out of stock #${index} ]<br>
+                         `
+                    // <div id="Item" class="outOfStock">
+                    //     <h3>${name} <span class="labelNotice">${stock}</span> </h3>
+                    //     <p>$ ${price} | ${type}</p><br>
+                    //     <div style="display:flex;align-items:center;justify-content:space-between; gap: 10px;">
+                    //         <button disabled>Out of stock</button>
+                    //     </div>
+                    // </div>
+                    // `
+                } else if (requiredRank > rank) {
+
+                } else if (type == "Tool") {
+                    viewStore.innerHTML +=
+                        `
+                        <div id="Item">
+                            <div>
+                                <h3>${name} <span class="labelNotice">${stock}</span></h3>
+                                <p>$ ${price} | ${type}</p>
+                            </div><br>
+                            <div>
+                                <p>
+                                    <b>About product: </b><br>${toolDescription}<br><br>
+                                    <b>Health: </b>${toolHealth}<br>
+                                    <b>Power: </b>${toolPower}<br>
+                                </p>   
+                            </div>
+                            <br>
+                            <div style="display:flex;align-items:center;justify-content:space-between; gap: 10px;">
+                                <button onclick="buyItem('${name}', ${price}, ${stock}, ${requiredRank}, '${type}', ${index})">Buy for $ ${price}</button>
+                            </div>
+                        </div>
+                        `
+                } else if (type == "Consumable") {
+                    viewStore.innerHTML +=
+                        `
+                        <div id="Item">
+                            <div>
+                                <h3>${name} <span class="labelNotice">${stock}</span></h3>
+                                <p>$ ${price} | ${type}</p>
+                            </div><br>
+                            <div>
+                                <p>
+                                    <b>About product: </b><br>${boostDescription}<br><br>
+                                    <b>Duration: </b>${boostDuration}<br>
+                                    <b>Amount: </b>${boostAmount}
+                                </p>     
+                            </div>
+                            <br>
+                            <div style="display:flex;align-items:center;justify-content:space-between; gap: 10px;">
+                                <button onclick="buyItem('${name}', ${price}, ${stock}, ${requiredRank}, '${type}', ${index})">Buy for $ ${price}</button>
+                            </div>
+                        </div>
+                        `
+                }
+            })
+            if (storeItems.length == 0) {
+                storeSize.textContent = `Empty`;
+            } else {
+                storeSize.textContent = `${storeItems.length}`;
+            }
+        }
+        function buyItem(name, price, stock, requiredRank, type, index) {
+            var existingItem = inventory.find(item => item.name === name);
+            var itemInStore = storeItems.find(item => item.name === name);
+            if (existingItem) {
+                existingItem.quantity++;
+                stock = Number(stock) - 1;
+                balance = Number(balance) - price;
+                itemInStore.stock -= 1;
+            } else if (requiredRank > rank) {
+                gameWarning.textContent = "Your rank is too low, please rank up to unlock this item";
+                displayWarning();
+            } else if (balance < price) {
+                gameWarning.textContent = "Insufficent balance";
+                displayWarning();
+            } else if (stock == 0) {
+                gameWarning.textContent = "Item is out of stock";
+                displayWarning();
+            } else if (inventory.length == maxInventory) {
+                gameWarning.textContent = "Your inventory is full, please clear up some space by selling or upgrading your inventory."
+                displayWarning();
+            } else {
+                inventory.push({
+                    name: name,
+                    price: price,
+                    quantity: 1,
+                    type: type
+                });
+                itemInStore.stock -= 1;
+                balance -= price;
+            }
+            updateAll();
+        }
+
+        function updateI() {
+            var UI = document.querySelector("#UI").value;
+            maxInventory = UI;
+            updateAll();
+        }
+        function updateB() {
+            var UB = document.querySelector("#UB").value;
+            balance = UB;
+            updateAll();
+        }
+        function updateM() {
+            var UM = document.querySelector("#UM").value;
+            multiplier = UM;
+            updateAll();
+        }
+        function updateR() {
+            var UR = document.querySelector("#UR").value;
+            rank = UR;
+            updateAll();
+        }
+        function updateE() {
+            var UE = document.querySelector("#UE").value;
+            experience = UE;
+            updateAll();
+        }
+        // Load Game
+        function updateAll() {
+            updateBalance();
+            updateMultiplier();
+            updateExperience();
+            updateRank();
+            displayInventory();
+            displayStore();
+
+        }
+        updateAll();
+
+
+
+
+
+
+
+
+    </script>
+</body>
+
+</html>

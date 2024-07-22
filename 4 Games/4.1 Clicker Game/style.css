@@ -1,0 +1,78 @@
+body {
+    font-family:  'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #D72638;
+    font-weight: bold;
+}
+* {
+    margin:0;
+    padding: 0;
+}
+hr {
+    border: 2px solid white;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.mainContent {
+    display: grid;
+    grid-template-columns: 25rem 20rem;
+    gap: 20px;
+    padding: 20px;
+}
+main {
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: space-between;
+}
+.upgrades {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.upgradeButton {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    outline: 2px solid white;;
+    color: white;
+    padding: 10px;
+    width: 75%;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: .1s ease-in-out;
+}
+.upgradeButton:hover {
+   background-color: white;        
+   color: #D72638;
+}
+.main {
+    display: grid;
+}
+.balance {
+    display: flex;
+}
+button {
+    padding: 10px;
+    width: 25%;
+    border-radius: 10px;
+    border: 0;
+    background-color: white;;
+    color: black;
+    cursor: pointer;
+    font-weight: bold;
+    transition: .1s ease-in-out;
+}
+button:hover {
+    outline: 2px solid white;;
+    color: white;;
+    background-color: transparent;
+}
+h3 {
+    color: white;;
+    margin:0;
+    padding: 0;
+}
+p#warningMessage {
+    padding: 10px;
+    border-radius: 5px;
+    display: none;
+}

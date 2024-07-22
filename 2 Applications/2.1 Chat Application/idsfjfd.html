@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication is Fun</title>
+        <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            background-color: #4CAF50;
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
+ 
+        header {
+            background-color: #333;
+            padding: 10px;
+        }
+ 
+        header h1 {
+            margin: 0;
+        }
+ 
+        #authForm, #secretContent {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+ 
+        h2 {
+            color: #333;
+        }
+ 
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            box-sizing: border-box;
+        }
+ 
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+ 
+        button:hover {
+            background-color: #45a049;
+        }
+ 
+        #secretContent {
+            display: none;
+        }
+ 
+        #secretContent h1 {
+            color: #333;
+        }
+ 
+        .mini-app {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="authForm">
+        <h2>Sign Up or Sign In</h2>
+        <input type="email" placeholder="email" id="userEmail">
+        <input type="password" placeholder="password" id="userPassword">  <br><br>
+        <button id="signUpButton">Sign Up</button>
+        <button id="signInButton">Sign In</button>
+    </div>
+ 
+    <div id="secretContent">
+        <h3>This is top secret information that you can only see if</h3>
+        <h1>AUTHENTICATED</h1>
+        <button id="signOutButton">Sign Out</button>
+       
+        <div id="multiplication-table-app">
+            <h3>Multiplication Table App</h3>
+            <input type="number" id="multiplication-input" placeholder="Enter a number">
+            <button id="showMultiplicationTable">Show Multiplication Table</button>
+            <div id="multiplication-result"></div>
+        </div>
+ 
+        <div id="bmi-calculator-app">
+            <h3>BMI Calculator App</h3>
+            <label for="bmi-height">Height (cm):</label>
+            <input type="number" id="bmi-height" placeholder="Enter height">
+            <label for="bmi-weight">Weight (kg):</label>
+            <input type="number" id="bmi-weight" placeholder="Enter weight">
+            <button onclick="showBmiCalculator()">Calculate BMI</button>
+            <div id="bmi-result"></div>
+        </div>
+ 
+        <div id="square-area-app">
+            <h3>Square Area App</h3>
+            <label for="side-length">Side length:</label>
+            <input type="number" id="side-length" placeholder="Enter side length">
+            <button type="button" onclick="calculateSquareArea()">Calculate Area</button>
+            <div id="square-area-result"></div>
+        </div>
+ 
+        <div id="greeting-app">
+            <h3>Greeting App</h3>
+            <label for="user-name">Your name:</label>
+            <input type="text" id="user-name" placeholder="Enter your name">
+            <button onclick="greetMe()">Greet</button>
+            <div id="greeting-result"></div>
+        </div>
+ 
+    </div>
+ 
+    <script>
+         document.addEventListener('DOMContentLoaded', function () {
+        var btn = document.querySelector("#showMultiplicationTable");
+        btn.addEventListener('click', (showMultiplicationTable) => {
+        try {
+            const input = document.getElementById('multiplication-input');
+            const result = document.getElementById('multiplication-result');
+            const number = parseInt(input.value);
+ 
+            if (!isNaN(number)) {
+                result.innerText = '';
+                for (let i = 1; i <= 10; i++) {
+                    result.innerText += `${number} * ${i} = ${number * i}\n`;
+                }
+            } else {
+                result.innerText = 'Please enter a valid number.';
+            }
+        } catch (error) {
+            console.error('Error in showMultiplicationTable:', error);
+        }
+    })
+    // Mini-app: BMI Calculator
+    function showBmiCalculator() {
+        try {
+            const heightInput = document.getElementById('bmi-height');
+            const weightInput = document.getElementById('bmi-weight');
+            const result = document.getElementById('bmi-result');
+ 
+            const height = parseFloat(heightInput.value);
+            const weight = parseFloat(weightInput.value);
+ 
+            if (!isNaN(height) && !isNaN(weight) && height > 0 && weight > 0) {
+                const bmi = weight / ((height / 100) * (height / 100));
+                result.innerText = `Your BMI is: ${bmi.toFixed(2)}`;
+            } else {
+                result.innerText = 'Please enter valid values for height and weight.';
+            }
+        } catch (error) {
+            console.error('Error in showBmiCalculator:', error);
+        }
+    }
+ 
+    function calculateSquareArea() {
+        try {
+            const sideLengthInput = document.getElementById('side-length');
+            const result = document.getElementById('square-area-result');
+ 
+            const sideLength = parseFloat(sideLengthInput.value);
+ 
+            if (!isNaN(sideLength) && sideLength > 0) {
+                const area = sideLength * sideLength;
+                result.innerText = `Area of the square is: ${area}`;
+            } else {
+                result.innerText = 'Please enter a valid value for side length.';
+            }
+        } catch (error) {
+            console.error('Error in calculateSquareArea:', error);
+        }
+    }
+ 
+    // Mini-app: Greeting App
+    function greetUser() {
+        try {
+            const userNameInput = document.getElementById('user-name');
+            const result = document.getElementById('greeting-result');
+ 
+            const userName = userNameInput.value.trim();
+ 
+            if (userName !== '') {
+                result.innerText = `Hello, ${userName}! Welcome to our site.`;
+            } else {
+                result.innerText = 'Please enter your name.';
+            }
+        } catch (error) {
+            console.error('Error in greetUser:', error);
+        }
+    }
+ 
+        const userEmail = document.querySelector("#userEmail");
+        const userPassword = document.querySelector("#userPassword");
+        const authForm = document.querySelector("#authForm");
+        const secretContent = document.querySelector("#secretContent");
+        const signUpButton = document.querySelector("#signUpButton");
+        const signInButton = document.querySelector("#signInButton");
+        const signOutButton = document.querySelector("#signOutButton");
+ 
+        secretContent.style.display = 'none';
+ 
+        const userSignUp = async() => {
+            const signUpEmail = userEmail.value;
+            const signUpPassword = userPassword.value;
+            createUserWithEmailAndPassword(auth, signUpEmail, signUpPassword)
+            .then((userCredential) => {
+                const user = userCredential.user;
+                console.log(user);
+                alert("Your account has been created!");
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.log(errorCode + errorMessage)
+            })
+        }
+ 
+        const userSignIn = async() => {
+            const signInEmail = userEmail.value;
+            const signInPassword = userPassword.value;
+            signInWithEmailAndPassword(auth, signInEmail, signInPassword)
+            .then((userCredential) => {
+                const user = userCredential.user;
+                alert("You have signed in successfully!");
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.log(errorCode + errorMessage)
+            })
+        }
+ 
+        const checkAuthState = async() => {
+            onAuthStateChanged(auth, user => {
+                if(user) {
+                    authForm.style.display = 'none';
+                    secretContent.style.display = 'block';
+                }
+                else {
+                    authForm.style.display = 'block';
+                    secretContent.style.display = 'none';
+                }
+            })
+        }
+ 
+        const userSignOut = async() => {
+            await signOut(auth);
+        }
+ 
+        checkAuthState();
+ 
+        signUpButton.addEventListener('click', userSignUp);
+        signInButton.addEventListener('click', userSignIn);
+        signOutButton.addEventListener('click', userSignOut);
+       
+    });
+    </script>
+    <script type="module">
+       
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js';
+        import {
+            getAuth,
+            createUserWithEmailAndPassword,
+            signInWithEmailAndPassword,
+            onAuthStateChanged,
+            signOut
+        } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js';
+       
+        const firebaseConfig = {
+            apiKey: "AIzaSyD4yyMvwweQc2MJxldd5Ic4uPn9WX9vR64",
+            authDomain: "testoppgave2.firebaseapp.com",
+            projectId: "testoppgave2",
+            storageBucket: "testoppgave2.appspot.com",
+            messagingSenderId: "235002244781",
+            appId: "1:235002244781:web:ea002242771eab1ad7a024"
+        };
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+ 
+ 
+ 
+   
+      </script>
+</body>
+</html>

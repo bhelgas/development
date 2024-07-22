@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            height: 100dvh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #1e1e1e;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 5rem);
+            grid-template-rows: repeat(3, 5rem);
+            gap: 1.5px;
+        }
+        .item {
+            background-color: #1d1d1d;
+            border: 1px solid white;
+            color: white;
+            display: flex;
+            text-align: center;
+            padding: 10px;
+            align-items: center;
+            justify-content: center;
+            border-radius: 2.5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="grid">
+        <div class="c1r1 item" id="c1r1">Column 1 Row 1</div>
+        <div class="c2r1 item" id="c2r1">Column 2 Row 1</div>
+        <div class="c3r1 item" id="c3r1">Column 3 Row 1</div>
+        <div class="c1r2 item" id="c1r2">Column 1 Row 2</div>
+        <div class="c2r2 item" id="c2r2">Column 2 Row 2</div>
+        <div class="c3r2 item" id="c3r2">Column 3 Row 2</div>
+        <div class="c1r3 item" id="c1r3">Column 1 Row 3</div>
+        <div class="c2r3 item" id="c2r3">Column 2 Row 3</div>
+        <div class="c3r3 item" id="c3r3">Column 3 Row 3</div>
+    </div>
+
+    <script>
+        var c1r1 = document.querySelector("#c1r1");
+        var c2r1 = document.querySelector("#c2r1");
+        var c3r1 = document.querySelector("#c3r1");
+        var c1r2 = document.querySelector("#c1r2");
+        var c2r2 = document.querySelector("#c2r2");
+        var c3r2 = document.querySelector("#c3r2");
+        var c1r3 = document.querySelector("#c1r3");
+        var c2r3 = document.querySelector("#c2r3");
+        var c3r3 = document.querySelector("#c3r3");
+
+        var player1, player2,
+        c1r1.addEventListener('click', (e) => {
+            c1r1.textContent = "X";
+            c1r1.style.fontSize = "4rem";
+        })
+        c1r3.addEventListener('click', (e) => {
+            c1r3.textContent = "X";
+            c1r3.style.fontSize = "5rem";;
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+
+        class Car {
+
+            constructor(brand, model, year, color, topSpeed, currentSpeed) {
+                this.brand = brand;
+                this.model = model;
+                this.year = year;
+                this.color = color;
+                this.topSpeed = topSpeed;
+                this.currentSpeed = currentSpeed;
+            }
+
+            present() {
+                return `This is a ${this.color} ${this.brand} ${this.model} ${this.year}! Its top speed is ${this.topSpeed}, and the current speed is ${this.currentSpeed}!`
+            }
+        }
+        class fruit {
+            constructor(name, isHealthy) {
+                this.name = name;
+                this.isHealthy = isHealthy;
+            }
+
+            present() {
+                return `Fruit name: ${this.name} is healthy? ${this.isHealthy}`
+            }
+        }
+
+        var APPLE = new fruit("apple", true)
+
+        var FANTOM = new Car("Fantom", "XZ-9000", 2025, "Invisible Black", "323", "88");
+        var SOLARIS = new Car("Solaris", "Nebula Cruiser", 2030, "Quantum Blue", "200", "123");
+        var AEROBLAZE = new Car("AeroBlaze", "Velocity Vortex", 2040, "Plasma Red", "355", "150");
+
+        console.log(APPLE.present());
+        console.log(FANTOM.present());
+        console.log(SOLARIS.present());
+        console.log(AEROBLAZE.present());
+
+    </script>
+</body>
+</html>

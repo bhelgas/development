@@ -1,0 +1,45 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+body{
+    font-family: "Lato", sans-serif;
+    height: 100dvh;
+    width: 100dvw;
+    background-color: whitesmoke;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.loginas{
+    height: 800px;
+    width: auto;
+    background-color: #393E41;
+    display: grid;
+    padding: 20px;
+    grid-template-columns: repeat(2,1fr);
+    align-items: center;
+    border-radius: 40px;
+}
+
+h1{
+    width: 350px;
+    font-size: 40px;
+    color: #DDF6F1;
+
+    font-weight: 700;
+    font-style: normal;
+    padding: 120px;
+}
+
+input {
+    width: 25rem;
+    margin-bottom: 5px;
+}
+input, button {
+    align-items: right;
+    justify-content: right;
+    padding: 5px 10px 5px 10px;
+    border-radius: 5px;
+}

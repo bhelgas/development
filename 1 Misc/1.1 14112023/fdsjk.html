@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        div {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        function f(x) {
+            document.write(`${3 * x} <br>`);
+        }
+        f(2)
+        f(6)
+
+        function createDiv(
+            text, 
+            width, 
+            height, 
+            color, 
+            bgColor, 
+            borderRadius, 
+            padding,
+            border
+            ) {
+                
+            document.write(`<div id="div">${text}</div>`);
+            var createdDiv = document.querySelector("#div");
+
+            createdDiv.style.color = color;
+            createdDiv.style.backgroundColor = bgColor;
+            createdDiv.style.width = width + "px";
+            createdDiv.style.height = height + "px";
+            createdDiv.style.borderRadius = borderRadius + "px";
+            createdDiv.style.padding = padding + "px";
+            createdDiv.style.border = border;
+        }
+        createDiv(
+            /* Text */ "Text",
+            /* Width */ 50,
+            /* Height */ 50,
+            /* Text color */ "black",
+            /* Background color */ "#f4f4f4", 
+            /* Border radius */ 5, 
+            /* Padding */ 20,
+            /* Border */ "2px solid black"
+        )
+    </script>
+</body>
+</html>

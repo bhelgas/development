@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        input, button {
+            border: 1px solid black;
+            background-color: white;
+            border-radius: 2.5px;
+            width: 4rem;
+            text-align: center;
+            padding: 10px 0 10px 0;
+        }
+        button {
+            cursor: pointer;
+            background-color: whitesmoke;
+        }
+    </style>
+</head>
+<body>
+    <a id="Greeting"></a><br><br>
+    <input id="inputOne" type="text" placeholder="1">
+    <input id="inputTwo" type="text" placeholder="2">
+    <button id="btn">magic</button>
+    <a id="Numbers"> <span id="Sum"></span></a>
+
+    <script>
+        var Greeting = document.querySelector("#Greeting");
+        var Numbers = document.querySelector("#Numbers");
+        var inputOne = document.querySelector("#inputOne").value;
+        var inputTwo = document.querySelector("#inputTwo").value;
+        var Button = document.querySelector("#btn");
+        Sum.innerHTML = `${inputOne}, ${inputTwo}`
+        function greeting(name, day) {
+            Greeting.innerHTML = `Hello <b>${name}</b>! Today is <b>${day}</b>! `
+        }
+        Button.addEventListener('click', function Something(VALUE, VALUE2) {
+            VALUE = parseFloat.inputOne;
+            VALUE2 = parseFloat.inputTwo;
+            Numbers.innerHTML = `${VALUE}, ${VALUE2}`
+        })
+        greeting("Benjamin", "Tuesday");
+        Something(3, 34)
+    </script>
+</body>
+</html>

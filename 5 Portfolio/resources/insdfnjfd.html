@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        
+        class Phone {
+            constructor(brand, model, storage, size, camera) {
+                this.brand = brand;
+                this.model = model;
+                this.storage = storage;
+                this.size = size;
+                this.camera = camera;
+            }
+
+            showPhoneSpecs() {
+                return `You have a ${this.brand} ${this.model}, it has ${this.storage} GB of storage, it is ${this.size} cm tall! It has a ${this.camera} MP camera.`
+            }
+        }
+        class flipPhone extends Phone {
+            constructor(brand, model, storage, size, camera, screenType) {
+                super(brand, model, storage, size, camera)
+                this.screenType = screenType;
+            }
+
+            showPhoneSpecs() {
+                return `You have a ${this.brand} ${this.model}, it is a fliphone, it has ${this.storage} GB of storage, it is ${this.size} cm tall! It has a ${this.camera} MP camera. The screen is made of ${this.screenType}`
+            }
+        }
+        var allPhones = [];
+
+        allPhones.push (new Phone("Samsung", "Galaxy", 256, 17, 50));
+
+        var Huawei = new Phone("Huawei", "Honor", 128, 15, 30)
+        var Samsung = new flipPhone("Samsung", "banan", 2, 10, 4, "plastic")
+        console.log(allPhones)
+        console.log(Huawei.showPhoneSpecs());
+        console.log(Samsung.showPhoneSpecs())
+
+
+    </script>
+</body>
+</html>

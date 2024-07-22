@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #gameconfig {
+            display: flex;
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            background-color: #1621185a;
+            color: white;
+        }
+        :root {
+            --text-color: black;
+            --background-color: white;
+            --accent-color: white;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            color: var(--text-color);
+            background-color: var(--background-color);
+        }
+        h2 {
+            margin: 0;
+        }
+        #errorBanner {
+            margin: 10px;
+            box-sizing: border-box;
+            display: none;
+            position: fixed;
+            top: 10px; left: 10px; right: 10px;
+            background-color: red;
+            border-radius: 100px;
+            height: 2rem;
+            margin-bottom: 30px;
+            color: white;
+            align-items: center;
+            justify-content: center;
+        }
+        #errorObject {
+            color: white;
+            display: block;
+        }
+        #inventory {
+            display: grid;
+            grid-template-columns: repeat(3,1fr);
+            gap: 10px;
+        }
+        @media only screen and (max-width: 600px) {
+            #inventory {
+                grid-template-columns: repeat(2,1fr);
+            }
+        }
+        @media only screen and (max-width: 400px) {
+            #inventory {
+                grid-template-columns: 1fr;
+            }
+        }
+        #balance {
+            background-color: #81c995;
+            color: #162118;
+            font-weight: bold;
+            padding: 10px;
+            border-radius: 5px;
+            gap: 20px;
+            align-items: center;
+        }
+        #balance button {
+            border-radius: 5px;
+            padding: 10px;
+        }
+        .inventoryItem {
+            background-color: var(--background-color);
+            margin-bottom: 10px;
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1.5px solid var(--text-color)
+        }
+        button, input {
+            background-color: var(--accent-color);
+            color: var(--text-color);
+            padding: 10px 20px 10px 20px;
+            border-radius: 100px;
+            border: 1.4px solid var(--text-color);
+            cursor: pointer;
+        }
+        input{cursor: auto;outline: 0;}
+        main {padding: 20px;}
+
+
+
+        #ClickerShop {
+            display: none;
+            position: fixed;
+            left: 20%;
+            right: 20%;
+            top: 30%;
+            bottom: 30%;
+            background-color: rgb(255, 255, 255);
+            border-radius: 10px;
+            border: 1.4px solid var(--text-color);
+            padding: 20px;
+        }
+        #ClickerShopHeader {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+<body>
+    <!-- Clicker Shop -->
+
+        <div id="ClickerShop">
+            <div id="ClickerShopHeader">
+                <h2>Upgrade your clicker</h2>
+                <button onclick="CloseShop()">CLOSE</button>
+            </div>
+            <p>Welcome to the shop. Upgrade your clicks here. </p>
+        </div>
+
+    <!--  -->
+
+
+
+
+
+
+
+
+
+
+
+    <div id="errorBanner">
+        <span id="errorObject"></span>
+    </div>
+    <div id="gameconfig">
+        Game config: 
+    </div>
+    <main>
+        <!-- <div style="background-color: red;"><h1 style="color: blue">This is a huge issue</h1><p>That needs to be fixed <b>NOW</b></p></div> -->
+        &nbsp;
+        <button>Save Game</button>
+        &nbsp;
+        <button>Load Game</button><br><br>
+        
+        <div id="balance">
+            <p>Your balance: <span class="money">$ <span id="currentNumber">0</span></span></p>
+            <br>
+            <button onclick="clickMe()">Click me</button>
+            <button onclick="UpgradeMenu()">Upgrade clicker</button>
+        </div><br><br><br>
+        <div></div>
+        <div>
+            
+            <input type="text" placeholder="Item name" id="input1">
+            <button  onclick="PushItem()">Push item to inventory</button>
+            <br><br><br>
+            <h2> <b>Your inventory (<span id="invSize"></span>): </b></h2>
+            <p style="cursor: pointer;" onclick="ClearInventory()">Clear inventory</p><br><br>
+            <div id="inventory">
+                
+            </div>
+        </div>
+        <br><br><br>
+    </main>
+    <script>
+        // Declartation of important variables
+        var currentNumber = document.querySelector("#currentNumber");
+        var displayInventory = document.querySelector("#inventory");
+        var invSize = document.querySelector("#invSize");
+        var errorObject = document.querySelector("#errorObject");
+        var errorBanner = document.querySelector("#errorBanner");
+        var inventory = [
+            "Banana",
+            "Wood",
+            "Axe",
+            "Pickaxe",
+            "Apple",
+            "Dogshit",
+            "Apple tea",
+            "ChatGPT Plus",
+            "Fishing Rod",
+            "Glass"    
+        ];
+        var input1 = document.querySelector("#input1");
+
+
+        // START OF GAME CONFIGURATION //
+
+        var InventorySize = 20;
+        var StartingBalance = 150;
+        
+
+
+
+
+        balance = StartingBalance;
+        updateBalance();
+
+        var GameConfig = document.querySelector("#gameconfig");
+        GameConfig.innerHTML = `
+            Game config: 
+            <br>Inventory size: ${InventorySize}
+            <br>Starting balance: ${StartingBalance}
+            <br>Inventory on start: ${inventory.length}
+        `;
+
+        // END OF GAME CONFIGURATION  //
+
+
+        
+        function clickMe() {
+            balance++;
+            updateBalance();   
+        }
+        function upgradeMenu() {
+            var upgradeMenu = document.querySelector("#upgradeMenu");
+            var upMeIsClosed = true;
+            if(upMeIsClosed == true) {
+                upgradeMenu.style.display = "block";
+                document.body.style.overflow = "hidden";
+                upMeIsClosed = false;
+            } else {
+                upgradeMenu.style.display = "none";
+                document.body.style.overflow = "auto";
+                upMeIsClosed = true;
+            }
+        }
+        function ClearInventory() {
+            inventory = [];
+            updateInventory();
+        }
+        function deleteInventory() {
+            displayInventory.innerHTML = ``;
+        }
+        function DisplayInventory() {
+            displayInventory.innerHTML = ``;
+            for (var i = 0; i <= inventory.length-1; i++) {
+                displayInventory.innerHTML += `<div class="inventoryItem"><p><b>Index:</b> ${i+1}<br><b>Name: </b> ${inventory[i]}</p> <button id="button${i}" onclick="removeItem(${i})">Remove Item</button></div>`
+            }
+            if(inventory.length == 0) {
+                displayInventory.innerHTML += `<p>Your inventory is empty</p>`
+            }
+        }
+        function updateInventory() {
+            deleteInventory();
+            for (var i = 0; i <= inventory.length-1; i++) {
+                displayInventory.innerHTML += `<div class="inventoryItem"><p><b>Index:</b> ${i+1}<br><b>Name: </b> ${inventory[i]}</p> <button id="button${i}" onclick="removeItem(${i})">Remove Item</button></div>`
+            }
+            if (inventory.length == 0) {
+                displayInventory.innerHTML += `<p>Your inventory is empty</p>`
+            }
+        }
+        function removeItem(index) {
+            inventory.splice(index,1)
+            updateInventory();
+        }
+        function PushItem() {
+            if (inventory.length == InventorySize) {
+                errorBanner.style.display = "flex";
+                errorObject.innerHTML = `Inventory full, please remove unnecessary items. `
+                setTimeout(() => {errorBanner.style.display = "none";},5000);
+            } else if(inventory.includes(input1.value)) {
+                errorBanner.style.display = "flex";
+                errorObject.innerHTML = `Item ${input1.value} already exists. Stacked. (INDEX/${inventory.indexOf(input1.value)+1})`
+                inventory[inventory.indexOf(input1.value)] = input1.value + " ()"
+                setTimeout(() => {errorBanner.style.display = "none";},5000);
+            } else if (input1.value == "") {
+                errorBanner.style.display = "flex";
+                errorObject.innerHTML = `Item name cannot be empty.`
+                setTimeout(() => {errorBanner.style.display = "none";},5000);
+            } else {
+                inventory.push(input1.value);
+            }
+            DisplayInventory();
+            }
+        DisplayInventory();
+        
+        setInterval(() => {
+            invSize.textContent = inventory.length;
+        }, 5);
+
+
+
+
+        // Startup functions 
+
+        function updateBalance() {
+            currentNumber.textContent = balance;
+        }
+    </script>
+</body>
+</html>

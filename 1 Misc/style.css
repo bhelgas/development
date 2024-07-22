@@ -1,0 +1,71 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+:root {
+    --main-shadow: 0 0 3px #d1d1d1;
+    --nvce: 10px;
+}
+body {
+    background-image: url("https://img.freepik.com/premium-vector/abstract-modern-geometric-pattern-intertwining-lines_6073-885.jpg?w=996");
+    color: black;
+    height: 400rem;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+header {
+    display: flex;
+    position:sticky;
+    backdrop-filter: blur(4px);
+    top: 10px;
+    justify-content: space-between;
+    background-color: rgb(246, 246, 246) !important;
+    align-items: center;
+    box-shadow: 0 0 100px rgb(117, 117, 117);
+    margin: 10px;
+    border-radius: 100px;
+    padding: 20px;
+}
+header ul {
+    display: flex;
+}
+:link, .link>a, svg, :link:active, :link:focus, :link:visited, :any-link{
+    --themagic: black;
+    fill: var(--themagic);
+    color: var(--themagic);
+    background-color: transparent !important;
+    text-decoration: none;
+}
+.navigation-items {
+    list-style: none;
+} 
+.navigation-items > .link {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius:100px;
+    border-bottom: 2px solid transparent;
+    color: black;
+    text-decoration: none;
+    gap: 10px;
+    cursor: pointer;
+    margin-left: 5px; margin-right: 5px;
+}
+i {
+    transform: translateY('20px');
+}
+.link #active {  
+    background-color: white;
+    cursor: default;
+}
+.link:hover{
+    color: black !important;
+    background-color: rgb(255, 234, 249) !important;
+}
+header .buttons button {
+    padding: 5px;
+    border-radius: 5px;
+    background-color: #f4f4f4;
+    border: 0;
+    color: black;
+    text-decoration: none;
+}

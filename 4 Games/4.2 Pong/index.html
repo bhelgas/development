@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pong</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <canvas id="gameCanvas" height="400" width="600"></canvas>
+
+    <script>
+        var canvas = document.querySelector("#gameCanvas");
+        var ctx = canvas.getContext("2d");
+
+        var keys = [];
+        
+        window.addEventListener("keydown", key);
+        window.addEventListener("keyup", key);
+
+        function key(e) {
+            if(e.type === "keydown") {
+                keys[e.keyCode] = true;
+            } else if (e.type === "keyup") {
+                delete keys[e.keyCode];
+            }
+        }
+
+        class Player {
+            constructor(x, y, width, height, speed, keyUp, keyDown, color) {
+                this.x = x;
+                this.y = y;
+                this.width = width;
+                this.height = height;
+                this.speed = speed;
+                this.keyUp = keyUp;
+                this.keyDown = keyDown;
+                this.color = color;
+            }
+
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.fillRect(this.x, this.y, this.width, this.height);
+            }
+
+            move() {
+                this.y += this.speed;
+
+                if (keys[this.keyUp]) {
+                    this.y -= 0.2;
+                    this.speed -= 0.2;
+                } else if (keys[this.keyDown]) {
+                    this.y += 0.2;
+                    this.speed += 0.2;
+                } else {
+                    this.speed = 0;
+                }
+            }
+        }
+
+        var player1 = new Player(50, 140, 20, 100, 0, 87, 83, "black");
+        var player2 = new Player(530, 120, 20, 100, 0, 38, 40, "black");
+
+        class Ball {
+            constructor(x, y, radius, xSpeed, ySpeed, color) {
+                this.x = x;
+                this.y = y;
+                this.radius = radius;
+                this.xSpeed = xSpeed;
+                this.ySpeed = ySpeed;
+                this.color = color;
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+            }
+
+            move(p1, p2) {
+                this.x += this.xSpeed;
+                this.y += this.ySpeed;
+
+                var top = this.y - 10;
+                var bottom = this.y + 10;
+                var left = this.x - 10;
+                var right = this.x + 10;
+
+                if(top < 0 || bottom > canvas.height) {
+                    this.ySpeed = -this.ySpeed;
+                }
+
+                if(left < p1.x + p1.width && top < p1.y + p1.height && bottom > p1.y) {
+                    this.xSpeed = -this.xSpeed
+
+                    if(p1.speed !== 0) {
+                        this.ySpeed = p1.speed;
+                    }
+                }
+
+                if(left < p2.x + p2.width && top < p2.y + p2.height && bottom > p2.y) {
+                    this.xSpeed = -this.xSpeed
+
+                    if(p2.speed !== 0) {
+                        this.ySpeed = p2.speed;
+                    }
+                }
+
+                if(this.x < 0 || this.x > canvas.width) {
+                    this.x = 300;
+                    this.y = 200;
+                }
+            }
+        }
+        var ball = new Ball(300, 200, 10, 5, 0, "black");
+
+
+
+        function game() {
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+
+            player1.move();
+            player1.draw();
+
+            player2.move();
+            player2.draw();
+
+            ball.move(player1, player2);
+            ball.draw();
+
+            requestAnimationFrame(game);
+        }
+        requestAnimationFrame(game);
+    </script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="calculator-body">
+        <div class="output topleft topright">
+            <div id="output" class="current-operand"></div>
+        </div>
+
+        <button class="two" onclick="clearOutput()">AC <sup><sub><sup><sub>(airconditioner)</sub></sup></sub></sup></button>
+        <button onclick="del()">DEL</button>
+        <button onclick="valueadder2000('/')">÷</button>
+        <button onclick="valueadder2000('1')">1</button>
+        <button onclick="valueadder2000('2')">2</button>
+        <button onclick="valueadder2000('3')">3</button>
+        <button onclick="valueadder2000('*')">*</button>
+        <button onclick="valueadder2000('4')">4</button>
+        <button onclick="valueadder2000('5')">5</button>
+        <button onclick="valueadder2000('6')">6</button>
+        <button onclick="valueadder2000('+')">+</button>
+        <button onclick="valueadder2000('7')">7</button>
+        <button onclick="valueadder2000('8')">8</button>
+        <button onclick="valueadder2000('9')">9</button>
+        <button onclick="valueadder2000('-')">-</button>
+        <button class="bottomleft" onclick="numberadder2000('.')">.</button>
+        <button onclick="valueadder2000('0')">0</button>
+        <button class="two bottomright" onclick="calculate()">=</button>
+    </div>
+
+    <script>
+        let output = document.getElementById("output");
+
+        function valueadder2000(value) {
+            output.textContent += value;
+        }
+
+        function clearOutput() {
+            output.textContent = " ";
+        }
+
+        function del() {
+            output.textContent = output.textContent.slice(0, -1);
+        }
+
+        function calculate() {
+            output.textContent = eval(output.textContent);
+        }
+    </script>
+</body>
+</html>
